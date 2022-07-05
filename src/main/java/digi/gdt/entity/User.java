@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -34,9 +35,7 @@ public class User {
 	private String photo;
 
 	@ManyToMany
-	// @JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "ID_USER",
-	// referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name =
-	// "ID_ROLE", referencedColumnName = "ID"))
+	@Size(min = 1, max = 3)
 	private Set<Role> roles;
 
 	@ManyToMany
