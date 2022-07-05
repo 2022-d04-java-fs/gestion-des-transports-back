@@ -17,16 +17,20 @@ public class Carpool {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	@NotNull
 	private LocalDateTime date;
+
 	@NotNull
 	private String departureAddress;
+
 	@NotNull
 	private String arrivalAddress;
 
 	private BigDecimal distance;
 
 	private BigInteger duration;
+
 	@NotNull
 	@PositiveOrZero
 	private Integer availableSeats;
