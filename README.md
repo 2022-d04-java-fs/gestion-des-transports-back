@@ -1,3 +1,6 @@
+Liste des requêtes
+==================
+
 | Methode | Route                                                 | Description                                                      | Utilisateur      |
 | ------- | ----------------------------------------------------- | ---------------------------------------------------------------- | ---------------- |
 | POST    | /auth                                                 | Authentification                                                 | Tous             |
@@ -26,5 +29,8 @@
 | GET     | /users/:identification\_number/planning?day=X         | Récupère le planning du chauffeur pour le jour X                 | Chauffeur & plus |
 | PATCH   | /company-vehicles/reservations/:reservationID         | Affecte le chauffeur à la reservation                            | Chauffeur & plus |
 | GET     | /users/:identification\_number/planning?from=X&to=Y   | Récupère le taux d'occupation d'un chauffeur donné               | Chauffeur & plus |
+
+Diagrame UML
+============
 
 ![Image](https://user-images.githubusercontent.com/79093561/177292996-21a8f45d-1c10-481c-8412-fbf6d70211fb.png)
