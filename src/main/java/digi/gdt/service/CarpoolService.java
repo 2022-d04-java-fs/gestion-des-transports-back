@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import digi.gdt.entity.Carpool;
 import digi.gdt.repository.CarpoolRepository;
+import digi.gdt.repository.UserRepository;
 
 @Service
 public class CarpoolService {
@@ -35,4 +38,5 @@ public class CarpoolService {
     return this.carpoolRepo.findByDepartureAddressAndArrivalAddressAndDateGreaterThan(departureAddress, arrivalAddress,
         date);
   }
+
 }

@@ -1,13 +1,13 @@
 package digi.gdt.controller;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.NotFound;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +55,7 @@ public class CarpoolController {
   public ResponseEntity<?> listAllByDepartureAddress(@RequestParam String departureAddress) {
     Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddress(departureAddress);
     if (optCarpools.get().size() == 0) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
     } else {
       List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
       return ResponseEntity.ok(carpools);
@@ -77,7 +77,7 @@ public class CarpoolController {
     Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddressAndArrivalAddress(departureAddress,
         arrivalAddress);
     if (optCarpools.get().size() == 0) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
     } else {
       List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
       return ResponseEntity.ok(carpools);
@@ -102,7 +102,7 @@ public class CarpoolController {
         departureAddress,
         arrivalAddress, dateTime);
     if (optCarpools.get().size() == 0) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
     } else {
       List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
       return ResponseEntity.ok(carpools);
