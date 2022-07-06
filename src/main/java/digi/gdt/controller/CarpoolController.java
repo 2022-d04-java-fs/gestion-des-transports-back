@@ -1,5 +1,7 @@
 package digi.gdt.controller;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +43,70 @@ public class CarpoolController {
     return this.carpoolService.findAll().stream().map(CarpoolDto::from).toList();
   }
 
-  // @GetMapping(params = { "departureAddress" })
-  // public ResponseEntity<?> listAllByDepartureAddress(@PathVariable String
-  // departureAddress) {
-  // TODO à compléter
-  // }
+  /**
+   * *GET* - Liste des covoiturages en fonction de leur ville de départ
+   * 
+   * 404 - covoiturage non trouvé
+   * 200 - liste des covoiturages trouvés
+   * 
+   * @return ResponseEntity<?>
+   */
+  @GetMapping(params = { "departureAddress" })
+  public ResponseEntity<?> listAllByDepartureAddress(@RequestParam String departureAddress) {
+    Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddress(departureAddress);
+    if (optCarpools.get().size() == 0) {
+      return ResponseEntity.notFound().build();
+    } else {
+      List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
+      return ResponseEntity.ok(carpools);
+    }
+  }
+
+  /**
+   * *GET* - Liste des covoiturages en fonction de leur ville de départ et de leur
+   * ville d'arrivée
+   * 
+   * 404 - covoiturage non trouvé
+   * 200 - liste des covoiturages trouvés
+   * 
+   * @return ResponseEntity<?>
+   */
+  @GetMapping(params = { "departureAddress", "arrivalAddress" })
+  public ResponseEntity<?> listAllByDepartureAddressAndArrivalAddress(@RequestParam String departureAddress,
+      @RequestParam String arrivalAddress) {
+    Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddressAndArrivalAddress(departureAddress,
+        arrivalAddress);
+    if (optCarpools.get().size() == 0) {
+      return ResponseEntity.notFound().build();
+    } else {
+      List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
+      return ResponseEntity.ok(carpools);
+    }
+  }
+
+  /**
+   * *GET* - Liste des covoiturages en fonction de leur ville de départ, de leur
+   * ville d'arrivée et à une date postérieure à celle mentionnée
+   * 
+   * 404 - covoiturage non trouvé
+   * 200 - liste des covoiturages trouvés
+   * 
+   * @return ResponseEntity<?>
+   */
+  @GetMapping(params = { "departureAddress", "arrivalAddress", "date" })
+  public ResponseEntity<?> listAllByDepartureAddressAndArrivalAddressAndDateGreaterThan(
+      @RequestParam String departureAddress,
+      @RequestParam String arrivalAddress, @RequestParam String date) {
+    LocalDateTime dateTime = LocalDateTime.parse(date);
+    Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddressAndArrivalAddressAndDateGreaterThan(
+        departureAddress,
+        arrivalAddress, dateTime);
+    if (optCarpools.get().size() == 0) {
+      return ResponseEntity.notFound().build();
+    } else {
+      List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
+      return ResponseEntity.ok(carpools);
+    }
+  }
 
 }
