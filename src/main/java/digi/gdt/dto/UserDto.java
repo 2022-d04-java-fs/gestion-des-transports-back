@@ -15,7 +15,7 @@ public class UserDto {
   }
 
   public static UserDto from(User user) {
-    return new UserDto(user.getLastname(), user.getLastname());
+    return new UserDto(user.getLastname(), user.getFirstname());
   }
 
   public String getLastname() {

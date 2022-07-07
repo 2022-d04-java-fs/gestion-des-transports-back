@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import digi.gdt.dto.CreateCarpoolReservationDto;
 import digi.gdt.entity.User;
 import digi.gdt.service.UserService;
 
@@ -19,10 +20,9 @@ public class UserController {
     this.userSrv = userSrv;
   }
 
-  // @PostMapping("{user_id}/carpoolreservation/{carpool_id}")
-  // public ResponseEntity<?> createCarpoolReservation(@PathVariable Integer
-  // user_id, @PathVariable Integer carpool_id) {
-  // User user = userSrv.createCarpoolReservation(user_id, carpool_id);
-  // return ResponseEntity.ok(user);
-  // }
+  @PostMapping("{user_id}/carpoolreservation/{carpool_id}")
+  public ResponseEntity<?> createCarpoolReservation(@PathVariable Integer user_id, @PathVariable Integer carpool_id) {
+    CreateCarpoolReservationDto user = userSrv.createCarpoolReservation(user_id, carpool_id);
+    return ResponseEntity.ok(user);
+  }
 }
