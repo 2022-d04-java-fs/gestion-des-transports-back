@@ -20,7 +20,19 @@ public class UserController {
     this.userSrv = userSrv;
   }
 
-  @PostMapping("{user_id}/carpoolreservation/{carpool_id}")
+  /**
+   * *POST* - Un user donné réserve un covoiturage donné
+   * Le nombre de places disponible pour ce covoiturage est décrémenté de 1.
+   * 
+   * 404 - user ou covoiturage non trouvé
+   * 400 - plus de place disponible
+   * 200 - covoiturage réservé !
+   * 
+   * @param user_id
+   * @param carpool_id
+   * @return ResponseEntity<?>
+   */
+  @PostMapping("{user_id}/carpools/{carpool_id}")
   public ResponseEntity<?> createCarpoolReservation(@PathVariable Integer user_id, @PathVariable Integer carpool_id) {
     CreateCarpoolReservationDto user = userSrv.createCarpoolReservation(user_id, carpool_id);
     return ResponseEntity.ok(user);

@@ -10,8 +10,17 @@ import digi.gdt.dto.ApiExceptionDto;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-  @ExceptionHandler(value = { ApiRequestException.class })
-  public ResponseEntity<?> handleApiRequestException(ApiRequestException exception) {
+  @ExceptionHandler(value = { NotFoundException.class })
+  public ResponseEntity<?> handleApiRequestException(NotFoundException exception) {
+    HttpStatus badRequest = HttpStatus.NOT_FOUND;
+    ApiExceptionDto apiException = new ApiExceptionDto(
+        exception.getMessage(),
+        badRequest);
+    return new ResponseEntity<>(apiException, badRequest);
+  }
+
+  @ExceptionHandler(value = { BadRequestException.class })
+  public ResponseEntity<?> handleApiRequestException(BadRequestException exception) {
     HttpStatus badRequest = HttpStatus.BAD_REQUEST;
     ApiExceptionDto apiException = new ApiExceptionDto(
         exception.getMessage(),
