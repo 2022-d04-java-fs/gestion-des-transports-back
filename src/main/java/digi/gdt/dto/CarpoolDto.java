@@ -7,6 +7,7 @@ import digi.gdt.entity.PrivateVehicle;
 import digi.gdt.entity.User;
 
 public class CarpoolDto {
+  private Integer carpool_id;
   private LocalDateTime dateHeure;
   private String departureAddress;
   private String arrivalAddress;
@@ -17,9 +18,10 @@ public class CarpoolDto {
   public CarpoolDto() {
   }
 
-  public CarpoolDto(LocalDateTime dateHeure, String departureAddress, String arrivalAddress,
+  public CarpoolDto(Integer carpool_id, LocalDateTime dateHeure, String departureAddress, String arrivalAddress,
       PrivateVehicle vehicle,
       User user, Integer availableSeats) {
+    this.carpool_id = carpool_id;
     this.dateHeure = dateHeure;
     this.departureAddress = departureAddress;
     this.arrivalAddress = arrivalAddress;
@@ -29,8 +31,17 @@ public class CarpoolDto {
   }
 
   public static CarpoolDto from(Carpool carpool) {
-    return new CarpoolDto(carpool.getDate(), carpool.getDepartureAddress(), carpool.getArrivalAddress(),
+    return new CarpoolDto(carpool.getId(), carpool.getDate(), carpool.getDepartureAddress(),
+        carpool.getArrivalAddress(),
         carpool.getVehicle(), carpool.getCreator(), carpool.getAvailableSeats());
+  }
+
+  public Integer getCarpool_id() {
+    return this.carpool_id;
+  }
+
+  public void setCarpool_id(Integer carpool_id) {
+    this.carpool_id = carpool_id;
   }
 
   public LocalDateTime getDateHeure() {
