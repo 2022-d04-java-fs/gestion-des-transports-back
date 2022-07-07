@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import digi.gdt.dto.CreateCarpoolReservationDto;
-import digi.gdt.entity.User;
 import digi.gdt.service.UserService;
 
 @RestController
