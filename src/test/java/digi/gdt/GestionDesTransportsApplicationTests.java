@@ -49,7 +49,7 @@ class GestionDesTransportsApplicationTests {
 		// user_id d'un user connu
 		Integer user_id = 1;
 		// carpool_id d'un covoiturage connu et encore disponible
-		Integer carpool_id = 5;
+		Integer carpool_id = 1;
 		mockMvc.perform(MockMvcRequestBuilders.post("/users/" + user_id + "/carpools/" + carpool_id))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
