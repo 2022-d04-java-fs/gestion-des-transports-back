@@ -10,14 +10,14 @@ import digi.gdt.entity.Carpool;
 
 public interface CarpoolRepository extends JpaRepository<Carpool, Integer> {
 
-  Optional<Carpool> findById(Integer id);
+	@Override
+	Optional<Carpool> findById(Integer id);
 
-  Optional<List<Carpool>> findByDepartureAddress(String departureAddress);
+	Optional<List<Carpool>> findByDepartureAddress(String departureAddress);
 
-  Optional<List<Carpool>> findByDepartureAddressAndArrivalAddress(String departureAddress, String arrivalAddress);
+	Optional<List<Carpool>> findByDepartureAddressAndArrivalAddress(String departureAddress, String arrivalAddress);
 
-  Optional<List<Carpool>> findByDepartureAddressAndArrivalAddressAndDateGreaterThan(String departureAddress,
-      String arrivalAddress,
-      LocalDateTime date);
+	Optional<List<Carpool>> findByDepartureAddressAndArrivalAddressAndDateGreaterThan(String departureAddress,
+			String arrivalAddress, LocalDateTime date);
 
 }

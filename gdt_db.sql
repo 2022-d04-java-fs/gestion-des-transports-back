@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS `carpool` (
 --
 
 INSERT INTO `carpool` (`id`, `arrival_address`, `available_seats`, `date`, `departure_address`, `distance`, `duration`, `creator_id`, `vehicle_id`) VALUES
-(1, 'Lille', 2, '2022-07-05 13:36:03', 'Tourcoing', NULL, NULL, 1, 1);
+(1, 'Lille', 2, '2022-07-05 13:36:03', 'Tourcoing', NULL, NULL, 1, 1),
+(2, 'Lille', 2, '2022-07-20 13:36:03', 'Tourcoing', NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -213,7 +214,8 @@ CREATE TABLE IF NOT EXISTS `user_carpool_reservations` (
 
 INSERT INTO `user_carpool_reservations` (`user_id`, `carpool_reservations_id`) VALUES
 (2, 1),
-(3, 1);
+(3, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
