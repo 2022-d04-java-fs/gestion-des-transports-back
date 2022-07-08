@@ -24,6 +24,7 @@ public class UserController {
   /**
    * *POST* - Un user donné réserve un covoiturage donné
    * Le nombre de places disponible pour ce covoiturage est décrémenté de 1.
+   * 'POST http://localhost:8080/api/users/{user_id}/carpools/{carpool_id}'
    * 
    * 404 - user ou covoiturage non trouvé
    * 400 - plus de place disponible

@@ -28,14 +28,7 @@ public class CarpoolController {
 
   /**
    * *GET* - Liste de tous les covoiturages
-   * Format de la réponse : {
-   * dateHeure,
-   * departureAddress,
-   * arrivalAddress,
-   * vehicle:{model, brand},
-   * driver:{lastname, firstname},
-   * availableSeats
-   * }
+   * 'GET http://localhost:8080/api/carpools'
    * 
    * @return List<CarpoolDto>
    */
@@ -46,6 +39,7 @@ public class CarpoolController {
 
   /**
    * *GET* - Liste des covoiturages en fonction de leur ville de départ
+   * 'GET http://localhost:8080/api/carpools?departureAddress='
    * 
    * 404 - covoiturage non trouvé
    * 200 - liste des covoiturages trouvés
@@ -66,6 +60,7 @@ public class CarpoolController {
   /**
    * *GET* - Liste des covoiturages en fonction de leur ville de départ et de leur
    * ville d'arrivée
+   * 'GET http://localhost:8080/api/carpools?departureAddress=&arrivalAddress='
    * 
    * 404 - covoiturage non trouvé
    * 200 - liste des covoiturages trouvés
@@ -88,6 +83,8 @@ public class CarpoolController {
   /**
    * *GET* - Liste des covoiturages en fonction de leur ville de départ, de leur
    * ville d'arrivée et à une date postérieure à celle mentionnée
+   * 'GET
+   * http://localhost:8080/api/carpools?departureAddress=&arrivalAddress=&date='
    * 
    * 404 - covoiturage non trouvé
    * 200 - liste des covoiturages trouvés
