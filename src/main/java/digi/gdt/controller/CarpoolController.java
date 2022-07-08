@@ -110,6 +110,14 @@ public class CarpoolController {
 		}
 	}
 
+	/**
+	 * *POST* - Créer une nouvelle annonce de covoiturage 'POST
+	 * http://localhost:8080/api/carpools'
+	 * 
+	 * 400 - Bad Request 200 - Objet carpool crée
+	 * 
+	 * @return ResponseEntity<?>
+	 */
 	@PostMapping
 	public ResponseEntity<?> addCarpool(@RequestBody AddCarpoolDto carpool) {
 		AddPrivateVehicleDto vehicle = carpool.getVehicle();
