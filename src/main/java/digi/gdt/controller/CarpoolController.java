@@ -48,11 +48,11 @@ public class CarpoolController {
    */
   @GetMapping(params = { "departureAddress" })
   public ResponseEntity<?> listAllByDepartureAddress(@RequestParam String departureAddress) {
-    Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddress(departureAddress);
-    if (optCarpools.get().size() == 0) {
+    List<Carpool> carpoolsList = this.carpoolService.findByDepartureAddress(departureAddress);
+    if (carpoolsList.size() == 0) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
     } else {
-      List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
+      List<CarpoolDto> carpools = carpoolsList.stream().map(CarpoolDto::from).toList();
       return ResponseEntity.ok(carpools);
     }
   }
@@ -70,12 +70,12 @@ public class CarpoolController {
   @GetMapping(params = { "departureAddress", "arrivalAddress" })
   public ResponseEntity<?> listAllByDepartureAddressAndArrivalAddress(@RequestParam String departureAddress,
       @RequestParam String arrivalAddress) {
-    Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddressAndArrivalAddress(departureAddress,
+    List<Carpool> carpoolsList = this.carpoolService.findByDepartureAddressAndArrivalAddress(departureAddress,
         arrivalAddress);
-    if (optCarpools.get().size() == 0) {
+    if (carpoolsList.size() == 0) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
     } else {
-      List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
+      List<CarpoolDto> carpools = carpoolsList.stream().map(CarpoolDto::from).toList();
       return ResponseEntity.ok(carpools);
     }
   }
@@ -96,13 +96,13 @@ public class CarpoolController {
       @RequestParam String departureAddress,
       @RequestParam String arrivalAddress, @RequestParam String date) {
     LocalDateTime dateTime = LocalDateTime.parse(date);
-    Optional<List<Carpool>> optCarpools = this.carpoolService.findByDepartureAddressAndArrivalAddressAndDateGreaterThan(
+    List<Carpool> carpoolsList = this.carpoolService.findByDepartureAddressAndArrivalAddressAndDateGreaterThan(
         departureAddress,
         arrivalAddress, dateTime);
-    if (optCarpools.get().size() == 0) {
+    if (carpoolsList.size() == 0) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
     } else {
-      List<CarpoolDto> carpools = optCarpools.get().stream().map(CarpoolDto::from).toList();
+      List<CarpoolDto> carpools = carpoolsList.stream().map(CarpoolDto::from).toList();
       return ResponseEntity.ok(carpools);
     }
   }
