@@ -1,13 +1,21 @@
 package digi.gdt.controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import digi.gdt.dto.CarpoolDto;
 import digi.gdt.dto.CreateCarpoolReservationDto;
+import digi.gdt.entity.User;
 import digi.gdt.service.UserService;
 
 @RestController
@@ -19,6 +27,27 @@ public class UserController {
 
 	public UserController(UserService userSrv) {
 		this.userSrv = userSrv;
+	}
+
+	/**
+	 * *GET* - Liste des covoiturages en fonction de l'id de l'utilisateur
+	 * http://localhost:8080/api/carpools?user_id='
+	 * 
+	 * 404 - covoiturage non trouvé 200 - liste des covoiturages trouvés
+	 * 
+	 * @return ResponseEntity<?>
+	 */
+	@GetMapping(params = { "user_id" })
+	public ResponseEntity<?> listAllByUserID(@RequestParam Integer user_id) {
+		// On récupère l'utilsateur grâce à son ID (s'il existe)
+		Optional<User> optUser = this.userSrv.findById(user_id);
+		if (optUser.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun utilisateur trouvé");
+		} else {
+			List<CarpoolDto> carpools = optUser.get().getCarpoolReservations().stream().map(CarpoolDto::from).toList();
+			return ResponseEntity.ok(carpools);
+
+		}
 	}
 
 	/**

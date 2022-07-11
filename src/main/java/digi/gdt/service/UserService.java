@@ -55,7 +55,6 @@ public class UserService {
 	}
 
 	public Optional<User> findById(Integer user_id) {
-		// TODO Auto-generated method stub
 		return this.userRepo.findById(user_id);
 	}
 }
