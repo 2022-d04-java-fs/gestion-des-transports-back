@@ -42,7 +42,7 @@ public class CarpoolReservationController {
 
 	/**
 	 * *PATCH* - Un user donné annule sa réservation à un covoiturage donné Le
-	 * nombre de places disponible pour ce covoiturage est incrémenté de 1. 'POST
+	 * nombre de places disponible pour ce covoiturage est incrémenté de 1. 'PATCH
 	 * http://localhost:8080/api/users/{user_id}/carpools/{carpool_id}'
 	 * 
 	 * 404 - user, covoiturage ou réservation non trouvée 400 - la réservation est

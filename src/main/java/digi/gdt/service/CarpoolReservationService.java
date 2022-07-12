@@ -26,7 +26,7 @@ public class CarpoolReservationService {
 			CarpoolRepository carpoolRepo) {
 		this.carpoolResaRepo = carpoolResaRepo;
 		this.userRepo = userRepo;
-		this.carpoolResaRepo = carpoolResaRepo;
+		this.carpoolRepo = carpoolRepo;
 	}
 
 	public CarpoolReservationDto createCarpoolReservation(Integer user_id, Integer carpool_id) {
@@ -45,7 +45,7 @@ public class CarpoolReservationService {
 			throw new BadRequestException("Plus de place disponible dans ce covoiturage");
 		}
 		carpool.setAvailableSeats(carpool.getAvailableSeats() - 1);
-
+		carpoolRepo.save(carpool);
 		User user = foundUser.get();
 
 		CarpoolReservation newReservation = new CarpoolReservation();
@@ -78,8 +78,10 @@ public class CarpoolReservationService {
 			throw new BadRequestException("la réservation est déjà annulée");
 		}
 		carpoolResa.setReservationStatus(CarpoolReservationStatusEnum.CANCELLED);
+		carpoolResaRepo.save(carpoolResa);
 		Carpool carpool = foundCarpool.get();
 		carpool.setAvailableSeats(carpool.getAvailableSeats() + 1);
+		carpoolRepo.save(carpool);
 		return CarpoolReservationDto.from(carpoolResa);
 	}
 
