@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import digi.gdt.dto.CarpoolDto;
@@ -37,8 +36,8 @@ public class UserController {
 	 * 
 	 * @return ResponseEntity<?>
 	 */
-	@GetMapping(params = { "user_id" })
-	public ResponseEntity<?> listAllByUserID(@RequestParam Integer user_id) {
+	@GetMapping("{user_id}/reservations")
+	public ResponseEntity<?> listAllByUserID(@PathVariable Integer user_id) {
 		// On récupère l'utilsateur grâce à son ID (s'il existe)
 		Optional<User> optUser = this.userSrv.findById(user_id);
 		if (optUser.isEmpty()) {
