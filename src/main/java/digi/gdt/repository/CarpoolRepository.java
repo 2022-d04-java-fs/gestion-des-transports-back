@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import digi.gdt.entity.Carpool;
+import digi.gdt.entity.User;
 
 public interface CarpoolRepository extends JpaRepository<Carpool, Integer> {
 
@@ -19,5 +20,7 @@ public interface CarpoolRepository extends JpaRepository<Carpool, Integer> {
   List<Carpool> findByDepartureAddressAndArrivalAddressAndDateGreaterThan(String departureAddress,
       String arrivalAddress,
       LocalDateTime date);
+
+  List<Carpool> findByCreator(User user);
 
 }
