@@ -1,5 +1,6 @@
 package digi.gdt.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -57,32 +58,30 @@ public class CarpoolReservationService {
 		return CarpoolReservationDto.from(newReservation);
 	}
 
-	public CarpoolReservationDto cancelCarpoolReservation(Integer user_id, Integer carpool_id) {
-		Optional<User> foundUser = this.userRepo.findById(user_id);
-		if (foundUser.isEmpty()) {
-			throw new NotFoundException("Utilisateur avec l'id " + user_id + " non trouvé");
-		}
-
-		Optional<Carpool> foundCarpool = this.carpoolRepo.findById(carpool_id);
-		if (foundCarpool.isEmpty()) {
-			throw new NotFoundException("Covoiturage avec l'id " + carpool_id + " non trouvé");
-		}
-		Optional<CarpoolReservation> foundCarpoolReservation = this.carpoolResaRepo
-				.findByCarpoolAndPassenger(foundCarpool.get(), foundUser.get());
+	public CarpoolReservationDto cancelCarpoolReservation(Integer reservation_id) {
+		Optional<CarpoolReservation> foundCarpoolReservation = this.carpoolResaRepo.findById(reservation_id);
 		if (foundCarpoolReservation.isEmpty()) {
-			throw new NotFoundException(
-					"Réservation du covoiturage " + carpool_id + " par l'utilisateur " + user_id + " non trouvé");
+			throw new NotFoundException("Réservation de covoiturage " + reservation_id + " non trouvée");
 		}
 		CarpoolReservation carpoolResa = foundCarpoolReservation.get();
 		if (carpoolResa.getReservationStatus() == CarpoolReservationStatusEnum.CANCELLED) {
 			throw new BadRequestException("la réservation est déjà annulée");
 		}
+
 		carpoolResa.setReservationStatus(CarpoolReservationStatusEnum.CANCELLED);
 		carpoolResaRepo.save(carpoolResa);
-		Carpool carpool = foundCarpool.get();
+		Carpool carpool = carpoolResa.getCarpool();
 		carpool.setAvailableSeats(carpool.getAvailableSeats() + 1);
 		carpoolRepo.save(carpool);
 		return CarpoolReservationDto.from(carpoolResa);
 	}
 
+	public List<CarpoolReservationDto> getCarpoolReservationsByUserId(Integer user_id) {
+		Optional<User> foundUser = userRepo.findById(user_id);
+		if (foundUser.isEmpty()) {
+			throw new NotFoundException("Utilisateur avec l'id " + user_id + " non trouvé");
+		}
+		return carpoolResaRepo.findByPassenger(foundUser.get()).stream().map(resa -> CarpoolReservationDto.from(resa))
+				.toList();
+	}
 }
