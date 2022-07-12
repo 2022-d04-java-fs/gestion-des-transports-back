@@ -27,12 +27,4 @@ public class UserCredentialsDto {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "{" +
-				" email='" + getEmail() + "'" +
-				", password='" + getPassword() + "'" +
-				"}";
-	}
-
 }

@@ -140,21 +140,4 @@ public class User {
 		this.photo = photo;
 	}
 
-	@Override
-	public String toString() {
-		return "{" +
-				" id='" + getId() + "'" +
-				", identificationNumber='" + getIdentificationNumber() + "'" +
-				", email='" + getEmail() + "'" +
-				", password='" + getPassword() + "'" +
-				", lastname='" + getLastname() + "'" +
-				", firstname='" + getFirstname() + "'" +
-				", telephone='" + getTelephone() + "'" +
-				", license='" + getLicense() + "'" +
-				", photo='" + getPhoto() + "'" +
-				", roles='" + getRoles() + "'" +
-				", carpoolReservations='" + getCarpoolReservations() + "'" +
-				"}";
-	}
-
 }
