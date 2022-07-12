@@ -17,18 +17,18 @@ import digi.gdt.entity.User;
 //      "driver" : userDto,
 //      "availableSeats": ,
 //  }}
-public class CreateCarpoolReservationDto extends UserDto {
+public class CreateCarpoolReservationDtoOLD extends UserDto {
   private Set<CarpoolDto> carpoolReservations = new HashSet<>();
 
-  public CreateCarpoolReservationDto(Integer user_id, String lastname, String firstname, Set<Carpool> set) {
+  public CreateCarpoolReservationDtoOLD(Integer user_id, String lastname, String firstname, Set<Carpool> set) {
     super(user_id, lastname, firstname);
     set.forEach(carpool -> {
       this.carpoolReservations.add(CarpoolDto.from(carpool));
     });
   }
 
-  public static CreateCarpoolReservationDto from(User user) {
-    return new CreateCarpoolReservationDto(user.getId(), user.getLastname(), user.getLastname(),
+  public static CreateCarpoolReservationDtoOLD from(User user) {
+    return new CreateCarpoolReservationDtoOLD(user.getId(), user.getLastname(), user.getLastname(),
         user.getCarpoolReservations());
   }
 
