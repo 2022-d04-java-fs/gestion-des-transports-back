@@ -4,10 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import digi.gdt.dto.CreateCarpoolReservationDto;
+import digi.gdt.dto.CreateUserDto;
+import digi.gdt.entity.User;
 import digi.gdt.service.UserService;
 
 @RestController
@@ -39,5 +42,13 @@ public class UserController {
     CreateCarpoolReservationDto user = userSrv.createCarpoolReservation(user_id, carpool_id);
     return ResponseEntity.ok(user);
   }
- 
+
+  @PostMapping
+  public ResponseEntity<?> createUser(@RequestBody CreateUserDto user) {
+    System.out.println("UserController > CreateUser");
+    User newUser = this.userSrv.createUser(user);
+
+    return ResponseEntity.ok(newUser);
+  }
+
 }

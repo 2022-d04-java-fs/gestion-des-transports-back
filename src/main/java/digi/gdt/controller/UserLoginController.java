@@ -1,10 +1,7 @@
 package digi.gdt.controller;
 
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,35 +14,21 @@ import digi.gdt.service.UserService;
 
 @RestController
 @RequestMapping("auth")
+@CrossOrigin(origins = "*")
 public class UserLoginController {
-	
+
 	private UserService userSrv;
 
 	public UserLoginController(UserService userSrv) {
 		super();
 		this.userSrv = userSrv;
 	}
-	
+
 	@PostMapping
-	  public ResponseEntity<?> userlogin(@RequestBody @Validated UserCredentialsDto userCredentials ){
-		
-		String email = userCredentials.getEmail();
-		String password = userCredentials.getPassword();
-		
-		Optional<User> userExist = this.userSrv.findByEmail(email);
-		if(userExist.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-		
-		User user = userExist.get();
-		
-		if(!user.getPassword().equals(password)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-		
-		UserDetailsDto userDetails = UserDetailsDto.from(user);
-		
+	public ResponseEntity<?> connectUser(@RequestBody UserCredentialsDto user) {
+		User connectedUser = this.userSrv.login(user);
+		UserDetailsDto userDetails = UserDetailsDto.from(connectedUser);
 		return ResponseEntity.ok(userDetails);
-	  }
+	}
 
 }
