@@ -9,13 +9,13 @@ public class PrivateVehicle extends AbstractVehicle {
 
 	@ManyToOne
 	@NotNull
-	private User owner;
+	private Users owner;
 
-	public User getOwner() {
+	public Users getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(Users owner) {
 		this.owner = owner;
 	}
 

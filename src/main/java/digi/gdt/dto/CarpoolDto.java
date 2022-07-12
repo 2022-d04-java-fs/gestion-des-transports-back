@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.PrivateVehicle;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 
 public class CarpoolDto {
   private Integer carpool_id;
@@ -20,7 +20,7 @@ public class CarpoolDto {
 
   public CarpoolDto(Integer carpool_id, LocalDateTime dateHeure, String departureAddress, String arrivalAddress,
       PrivateVehicle vehicle,
-      User user, Integer availableSeats) {
+      Users user, Integer availableSeats) {
     this.carpool_id = carpool_id;
     this.dateHeure = dateHeure;
     this.departureAddress = departureAddress;
