@@ -53,4 +53,8 @@ public class UserService {
     userRepo.save(user);
     return CreateCarpoolReservationDto.from(user);
   }
+  
+  public Optional<User> findByEmail(String email) {
+	return this.userRepo.findByEmail(email);
+  }
 }

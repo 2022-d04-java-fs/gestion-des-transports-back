@@ -46,6 +46,12 @@ public class User {
 		this.carpoolReservations = new HashSet<>();
 	}
 
+	public User(@NotNull String email, @NotNull String password) {
+		super();
+		this.email = email;
+		this.password = password;
+	}
+
 	public Set<Role> getRoles() {
 		return roles;
 	}

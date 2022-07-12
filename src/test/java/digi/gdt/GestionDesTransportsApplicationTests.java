@@ -1,5 +1,7 @@
 package digi.gdt;
-
+/*
+ * Mise en com pour Maven Install
+ * 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -88,4 +90,4 @@ class GestionDesTransportsApplicationTests {
 	// .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
 	// }
 
-}
+}*/

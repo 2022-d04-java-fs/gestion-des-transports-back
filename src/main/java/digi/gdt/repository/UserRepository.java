@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import digi.gdt.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-  Optional<User> findById(Integer id);
+	Optional<User> findById(Integer id);
+	
+	Optional<User> findByEmail(String email);
 }
