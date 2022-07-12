@@ -106,6 +106,16 @@ public class CarpoolController {
       return ResponseEntity.ok(carpools);
     }
   }
+  
+  /**
+   * *GET* - Liste des covoiturages en fonction de l'id de l'utilisateur
+   * 'GET http://localhost:8080/api/carpools/reservations/:userId'
+   * 
+   * 404 - utilisateur non trouvé
+   * 200 - liste des covoiturages trouvés
+   * 
+   * @return ResponseEntity<?>
+   */
   @GetMapping("reservations/{userId}")
   public ResponseEntity<?> listAllCarpoolByUserId(
 		  @PathVariable Integer userId) {
