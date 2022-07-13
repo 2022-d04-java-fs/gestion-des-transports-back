@@ -1,6 +1,6 @@
 package digi.gdt.dto;
 
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 
 public class CreateUserDto {
   private String email;
@@ -15,7 +15,7 @@ public class CreateUserDto {
     this.firstname = firstname;
   }
 
-  public static CreateUserDto from(User user) {
+  public static CreateUserDto from(Users user) {
     return new CreateUserDto(user.getEmail(), user.getPassword(), user.getFirstname(), user.getLastname());
   }
 
@@ -51,15 +51,6 @@ public class CreateUserDto {
     this.firstname = firstname;
   }
 
-  // TODO à supprimer !!!!
-  @Override
-  public String toString() {
-    return "{" +
-        " email='" + getEmail() + "'" +
-        ", password='" + getPassword() + "'" +
-        ", lastname='" + getLastname() + "'" +
-        ", firstname='" + getFirstname() + "'" +
-        "}";
-  }
+ 
 
 }

@@ -15,7 +15,7 @@ import digi.gdt.dto.UserCredentialsDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.Role;
 import digi.gdt.entity.RoleEnum;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.exception.BadRequestException;
 import digi.gdt.exception.NotFoundException;
 import digi.gdt.repository.CarpoolRepository;
@@ -35,7 +35,7 @@ public class UserService {
 
   @Transactional
   public CreateCarpoolReservationDto createCarpoolReservation(Integer user_id, Integer carpool_id) {
-    Optional<User> foundUser = this.userRepo.findById(user_id);
+    Optional<Users> foundUser = this.userRepo.findById(user_id);
     if (foundUser.isEmpty()) {
       throw new NotFoundException("Utilisateur avec l'id " + user_id + " non trouvé");
     }
@@ -51,7 +51,7 @@ public class UserService {
     }
     carpool.setAvailableSeats(carpool.getAvailableSeats() - 1);
 
-    User user = foundUser.get();
+    Users user = foundUser.get();
 
     Set<Carpool> userCarpools = user.getCarpoolReservations();
 
@@ -63,12 +63,12 @@ public class UserService {
   }
 
   @Transactional
-  public User createUser(CreateUserDto createUserDto) {
+  public Users createUser(CreateUserDto createUserDto) {
     if (this.userRepo.existsByEmail(createUserDto.getEmail())) {
       throw new BadRequestException("There is an account with that email adress: " + createUserDto.getEmail());
     }
 
-    User newUser = new User();
+    Users newUser = new Users();
     newUser.setEmail(createUserDto.getEmail());
     newUser.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
     newUser.setLastname(createUserDto.getLastname());
@@ -86,11 +86,11 @@ public class UserService {
   }
 
   @Transactional
-  public User login(UserCredentialsDto userCredentialsDto) {
+  public Users login(UserCredentialsDto userCredentialsDto) {
     if (!this.userRepo.existsByEmail(userCredentialsDto.getEmail())) {
       throw new BadRequestException("There is no account with that email adress: " + userCredentialsDto.getEmail());
     }
-    User foundedUser = this.userRepo.findByEmail(userCredentialsDto.getEmail());
+    Users foundedUser = this.userRepo.findByEmail(userCredentialsDto.getEmail());
     if (!passwordEncoder.matches(userCredentialsDto.getPassword(), foundedUser.getPassword())) {
       throw new BadRequestException("Invalid password");
     }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import digi.gdt.dto.UserCredentialsDto;
 import digi.gdt.dto.UserDetailsDto;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.service.UserService;
 
 @RestController
@@ -26,7 +26,7 @@ public class UserLoginController {
 
 	@PostMapping
 	public ResponseEntity<?> connectUser(@RequestBody UserCredentialsDto user) {
-		User connectedUser = this.userSrv.login(user);
+		Users connectedUser = this.userSrv.login(user);
 		UserDetailsDto userDetails = UserDetailsDto.from(connectedUser);
 		return ResponseEntity.ok(userDetails);
 	}

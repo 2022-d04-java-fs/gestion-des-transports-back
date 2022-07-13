@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-public class User {
+public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -41,12 +41,12 @@ public class User {
 	@ManyToMany
 	private Set<Carpool> carpoolReservations;
 
-	public User() {
+	public Users() {
 		this.roles = new HashSet<>();
 		this.carpoolReservations = new HashSet<>();
 	}
 
-	public User(@NotNull String email, @NotNull String password) {
+	public Users(@NotNull String email, @NotNull String password) {
 		super();
 		this.email = email;
 		this.password = password;

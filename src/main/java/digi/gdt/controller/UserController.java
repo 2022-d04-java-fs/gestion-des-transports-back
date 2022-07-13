@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import digi.gdt.dto.CreateCarpoolReservationDto;
 import digi.gdt.dto.CreateUserDto;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.service.UserService;
 
 @RestController
@@ -45,7 +45,7 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<?> createUser(@RequestBody CreateUserDto user) {
-    User newUser = this.userSrv.createUser(user);
+    Users newUser = this.userSrv.createUser(user);
 
     return ResponseEntity.ok(newUser);
   }

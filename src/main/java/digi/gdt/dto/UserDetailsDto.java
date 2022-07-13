@@ -3,7 +3,7 @@ package digi.gdt.dto;
 import java.util.Set;
 
 import digi.gdt.entity.Role;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 
 public class UserDetailsDto {
 	private Integer user_id;
@@ -19,7 +19,7 @@ public class UserDetailsDto {
 		this.roles = roles;
 	}
 
-	public static UserDetailsDto from(User user) {
+	public static UserDetailsDto from(Users user) {
 		return new UserDetailsDto(user.getId(), user.getLastname(), user.getFirstname(), user.getRoles());
 	}
 
