@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 import digi.gdt.dto.AddCarpoolDto;
 import digi.gdt.dto.AddPrivateVehicleDto;
 import digi.gdt.entity.Carpool;
-import digi.gdt.entity.PrivateVehicle;
-import digi.gdt.entity.Users;
+
 import digi.gdt.exception.NotFoundException;
 import digi.gdt.repository.CarpoolRepository;
+import digi.gdt.entity.PrivateVehicle;
+import digi.gdt.entity.Users;
 import digi.gdt.repository.PrivateVehicleRepository;
 import digi.gdt.repository.UserRepository;
 
@@ -45,6 +46,15 @@ public class CarpoolService {
 		return this.carpoolRepo.findByDepartureAddressAndArrivalAddress(departureAddress, arrivalAddress);
 	}
 
+
+  public List<Carpool> listAllCarpoolByUserId (Integer userId) {
+	  Optional<Users> foundUser = userRepo.findById(userId);
+	  if (foundUser.isEmpty()) {
+		  throw new NotFoundException("Utilisateur avec l'Id" + userId + "non trouvé");
+	  }
+	  Users user = foundUser.get();
+	  return this.carpoolRepo.findByCreator(user);
+  }
 	public List<Carpool> findByDepartureAddressAndArrivalAddressAndDateGreaterThan(String departureAddress,
 			String arrivalAddress, LocalDateTime date) {
 		return this.carpoolRepo.findByDepartureAddressAndArrivalAddressAndDateGreaterThan(departureAddress,

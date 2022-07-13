@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,5 +126,22 @@ public class CarpoolController {
       return ResponseEntity.ok(carpools);
     }
   }
+  
+  /**
+   * *GET* - Liste des covoiturages en fonction de l'id de l'utilisateur
+   * 'GET http://localhost:8080/api/carpools/reservations/:userId'
+   * 
+   * 404 - utilisateur non trouvé
+   * 200 - liste des covoiturages trouvés
+   * 
+   * @return ResponseEntity<?>
+   */
+  @GetMapping("reservations/{userId}")
+  public ResponseEntity<?> listAllCarpoolByUserId(
+		  @PathVariable Integer userId) {
+	  List<CarpoolDto> carpoolsListB = this.carpoolService.listAllCarpoolByUserId(userId).stream().map(CarpoolDto::from).toList();
+	  return ResponseEntity.ok(carpoolsListB);
+  }
+
 
 }
