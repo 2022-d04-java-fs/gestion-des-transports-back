@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import digi.gdt.entity.PrivateVehicle;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.exception.NotFoundException;
 import digi.gdt.repository.PrivateVehicleRepository;
 import digi.gdt.repository.UserRepository;
@@ -29,7 +29,7 @@ public class PrivateVehicleService {
 		if (existingVehicle.isPresent()) {
 			return existingVehicle.get();
 		}
-		Optional<User> foundUser = this.userRepo.findById(user_id);
+		Optional<Users> foundUser = this.userRepo.findById(user_id);
 		if (foundUser.isEmpty()) {
 			throw new NotFoundException("Utilisateur avec l'id " + user_id + " non trouvé");
 		}
