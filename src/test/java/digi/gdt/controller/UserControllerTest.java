@@ -86,7 +86,7 @@ public class UserControllerTest {
 		// user_id d'un user connu
 		Integer user_id = 1;
 		Mockito.when(userSrv.findAll()).thenReturn(users);
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/reservations?user_id=" + user_id))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().is4xxClientError());
 	}
 
@@ -101,7 +101,7 @@ public class UserControllerTest {
 		Optional<User> user_result = Optional.of(usersBeforeEach.get(user_id - 1)); // Comme les listes démarrent à 0,
 																					// on retire 1 à id ici
 		Mockito.when(userSrv.findById(user_id)).thenReturn(user_result);
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/reservations?user_id=" + user_id))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
@@ -129,7 +129,7 @@ public class UserControllerTest {
 																					// on retire 1 à id ici
 		user_result.get().setCarpoolReservations(new HashSet<Carpool>());
 		Mockito.when(userSrv.findById(user_id)).thenReturn(user_result);
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/reservations?user_id=" + user_id))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(0));

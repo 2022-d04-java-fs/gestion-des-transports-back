@@ -30,7 +30,7 @@ public class UserController {
 
 	/**
 	 * *GET* - Liste des covoiturages en fonction de l'id de l'utilisateur
-	 * http://localhost:8080/api/users/reservations?user_id='
+	 * http://localhost:8080/api/users/{user_id}/reservations'
 	 * 
 	 * 404 - covoiturage non trouvé 200 - liste des covoiturages trouvés
 	 * 
