@@ -1,6 +1,7 @@
 package digi.gdt.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,6 +34,10 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
+  public List<Users> findAll() {
+		return this.userRepo.findAll();
+	}
+
   @Transactional
   public CreateCarpoolReservationDto createCarpoolReservation(Integer user_id, Integer carpool_id) {
     Optional<Users> foundUser = this.userRepo.findById(user_id);
@@ -50,13 +55,7 @@ public class UserService {
       throw new BadRequestException("Plus de place disponible dans ce covoiturage");
     }
     carpool.setAvailableSeats(carpool.getAvailableSeats() - 1);
-
     Users user = foundUser.get();
-
-    Set<Carpool> userCarpools = user.getCarpoolReservations();
-
-    userCarpools.add(carpool);
-    user.setCarpoolReservations(userCarpools);
 
     userRepo.save(user);
     return CreateCarpoolReservationDto.from(user);
@@ -95,5 +94,9 @@ public class UserService {
       throw new BadRequestException("Invalid password");
     }
     return foundedUser;
+  }
+
+  public Optional<Users> findById(Integer user_id) {
+    return this.userRepo.findById(user_id);
   }
 }

@@ -25,10 +25,11 @@ import digi.gdt.service.CarpoolService;
 @RequestMapping("carpools")
 @CrossOrigin(origins = "*")
 public class CarpoolController {
-  private CarpoolService carpoolService;
 
-  public CarpoolController(CarpoolService carpoolService) {
-    this.carpoolService = carpoolService;
+  private CarpoolService carpoolSrv;
+
+  public CarpoolController(CarpoolService carpoolSrv) {
+    this.carpoolSrv = carpoolSrv;
   }
 
   /**
@@ -39,7 +40,7 @@ public class CarpoolController {
    */
   @GetMapping
   public List<CarpoolDto> listAll() {
-    return this.carpoolService.findAll().stream().map(CarpoolDto::from).toList();
+    return this.carpoolSrv.findAll().stream().map(CarpoolDto::from).toList();
   }
 
   /**
@@ -56,7 +57,7 @@ public class CarpoolController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     LocalDateTime date = LocalDateTime.parse(carpool.getDate(), formatter);
 
-    AddCarpoolDto newCarpool = this.carpoolService.createCarpool(date, carpool.getDepartureAddress(),
+    AddCarpoolDto newCarpool = this.carpoolSrv.createCarpool(date, carpool.getDepartureAddress(),
         carpool.getArrivalAddress(), carpool.getDistance(), carpool.getDuration(), carpool.getAvailableSeats(),
         carpool.getCreatorId(), vehicle);
 
@@ -73,7 +74,7 @@ public class CarpoolController {
    */
   @GetMapping(params = { "departureAddress" })
   public ResponseEntity<?> listAllByDepartureAddress(@RequestParam String departureAddress) {
-    List<Carpool> carpoolsList = this.carpoolService.findByDepartureAddress(departureAddress);
+    List<Carpool> carpoolsList = this.carpoolSrv.findByDepartureAddress(departureAddress);
     if (carpoolsList.size() == 0) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
     } else {
@@ -94,7 +95,7 @@ public class CarpoolController {
   @GetMapping(params = { "departureAddress", "arrivalAddress" })
   public ResponseEntity<?> listAllByDepartureAddressAndArrivalAddress(@RequestParam String departureAddress,
       @RequestParam String arrivalAddress) {
-    List<Carpool> carpoolsList = this.carpoolService.findByDepartureAddressAndArrivalAddress(departureAddress,
+    List<Carpool> carpoolsList = this.carpoolSrv.findByDepartureAddressAndArrivalAddress(departureAddress,
         arrivalAddress);
     if (carpoolsList.size() == 0) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
@@ -117,7 +118,7 @@ public class CarpoolController {
   public ResponseEntity<?> listAllByDepartureAddressAndArrivalAddressAndDateGreaterThan(
       @RequestParam String departureAddress, @RequestParam String arrivalAddress, @RequestParam String date) {
     LocalDateTime dateTime = LocalDateTime.parse(date);
-    List<Carpool> carpoolsList = this.carpoolService
+    List<Carpool> carpoolsList = this.carpoolSrv
         .findByDepartureAddressAndArrivalAddressAndDateGreaterThan(departureAddress, arrivalAddress, dateTime);
     if (carpoolsList.size() == 0) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun covoiturage trouvé");
@@ -126,7 +127,7 @@ public class CarpoolController {
       return ResponseEntity.ok(carpools);
     }
   }
-  
+
   /**
    * *GET* - Liste des covoiturages en fonction de l'id de l'utilisateur
    * 'GET http://localhost:8080/api/carpools/reservations/:userId'
@@ -138,10 +139,10 @@ public class CarpoolController {
    */
   @GetMapping("reservations/{userId}")
   public ResponseEntity<?> listAllCarpoolByUserId(
-		  @PathVariable Integer userId) {
-	  List<CarpoolDto> carpoolsListB = this.carpoolService.listAllCarpoolByUserId(userId).stream().map(CarpoolDto::from).toList();
-	  return ResponseEntity.ok(carpoolsListB);
+      @PathVariable Integer userId) {
+    List<CarpoolDto> carpoolsListB = this.carpoolSrv.listAllCarpoolByUserId(userId).stream().map(CarpoolDto::from)
+        .toList();
+    return ResponseEntity.ok(carpoolsListB);
   }
-
 
 }
