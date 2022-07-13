@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.PrivateVehicle;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.service.CarpoolService;
 
 /**
@@ -43,7 +43,7 @@ class CarpoolControllerTests {
 
   @BeforeEach
   void addCarpool() {
-    User u1 = new User();
+    Users u1 = new Users();
     u1.setEmail("test@test.fr");
     u1.setFirstname("John");
     u1.setLastname("Doe");
