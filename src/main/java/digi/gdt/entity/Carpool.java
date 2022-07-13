@@ -37,7 +37,7 @@ public class Carpool {
 
 	@ManyToOne
 	@NotNull
-	private User creator;
+	private Users creator;
 
 	@ManyToOne
 	@NotNull
@@ -47,11 +47,11 @@ public class Carpool {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User getCreator() {
+	public Users getCreator() {
 		return creator;
 	}
 
-	public void setCreator(User creator) {
+	public void setCreator(Users creator) {
 		this.creator = creator;
 	}
 

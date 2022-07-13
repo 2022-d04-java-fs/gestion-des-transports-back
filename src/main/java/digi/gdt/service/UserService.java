@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import digi.gdt.dto.CreateCarpoolReservationDto;
 import digi.gdt.entity.Carpool;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.exception.BadRequestException;
 import digi.gdt.exception.NotFoundException;
 import digi.gdt.repository.CarpoolRepository;
@@ -27,7 +27,7 @@ public class UserService {
 
   @Transactional
   public CreateCarpoolReservationDto createCarpoolReservation(Integer user_id, Integer carpool_id) {
-    Optional<User> foundUser = this.userRepo.findById(user_id);
+    Optional<Users> foundUser = this.userRepo.findById(user_id);
     if (foundUser.isEmpty()) {
       throw new NotFoundException("Utilisateur avec l'id " + user_id + " non trouvé");
     }
@@ -43,7 +43,7 @@ public class UserService {
     }
     carpool.setAvailableSeats(carpool.getAvailableSeats() - 1);
 
-    User user = foundUser.get();
+    Users user = foundUser.get();
 
     Set<Carpool> userCarpools = user.getCarpoolReservations();
 

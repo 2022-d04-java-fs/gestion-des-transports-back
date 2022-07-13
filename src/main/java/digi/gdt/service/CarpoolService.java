@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import digi.gdt.dto.AddCarpoolDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.PrivateVehicle;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.exception.NotFoundException;
 import digi.gdt.repository.CarpoolRepository;
 import digi.gdt.repository.UserRepository;
@@ -32,16 +32,16 @@ public class CarpoolService {
 		return this.carpoolRepo.findAll();
 	}
 
-	public Optional<List<Carpool>> findByDepartureAddress(String departureAddress) {
+	public List<Carpool> findByDepartureAddress(String departureAddress) {
 		return this.carpoolRepo.findByDepartureAddress(departureAddress);
 	}
 
-	public Optional<List<Carpool>> findByDepartureAddressAndArrivalAddress(String departureAddress,
+	public List<Carpool> findByDepartureAddressAndArrivalAddress(String departureAddress,
 			String arrivalAddress) {
 		return this.carpoolRepo.findByDepartureAddressAndArrivalAddress(departureAddress, arrivalAddress);
 	}
 
-	public Optional<List<Carpool>> findByDepartureAddressAndArrivalAddressAndDateGreaterThan(String departureAddress,
+	public List<Carpool> findByDepartureAddressAndArrivalAddressAndDateGreaterThan(String departureAddress,
 			String arrivalAddress, LocalDateTime date) {
 		return this.carpoolRepo.findByDepartureAddressAndArrivalAddressAndDateGreaterThan(departureAddress,
 				arrivalAddress, date);
@@ -51,7 +51,7 @@ public class CarpoolService {
 	public AddCarpoolDto createCarpool(LocalDateTime date, String departureAddress, String ArrivalAddress,
 			BigDecimal distance, BigInteger duration, Integer availableSeats, Integer creatorId,
 			PrivateVehicle vehicle) {
-		Optional<User> creator = this.userRepo.findById(creatorId);
+		Optional<Users> creator = this.userRepo.findById(creatorId);
 		if (creator.isEmpty()) {
 			throw new NotFoundException("Utilisateur avec l'id " + creatorId + " non trouvé");
 		}

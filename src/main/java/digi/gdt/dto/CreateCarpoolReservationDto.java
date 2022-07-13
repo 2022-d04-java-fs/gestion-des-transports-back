@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import digi.gdt.entity.Carpool;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 
 //  {
 //  "lastname": ,
@@ -27,7 +27,7 @@ public class CreateCarpoolReservationDto extends UserDto {
     });
   }
 
-  public static CreateCarpoolReservationDto from(User user) {
+  public static CreateCarpoolReservationDto from(Users user) {
     return new CreateCarpoolReservationDto(user.getId(), user.getLastname(), user.getLastname(),
         user.getCarpoolReservations());
   }
