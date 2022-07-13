@@ -24,11 +24,11 @@ public class VehicleReservation {
 	private LocalDateTime returnDate;
 
 	@ManyToOne
-	private User driver;
+	private Users driver;
 
 	@ManyToOne
 	@NotNull
-	private User client;
+	private Users client;
 
 	@ManyToOne
 	@NotNull
@@ -62,19 +62,19 @@ public class VehicleReservation {
 		this.returnDate = returnDate;
 	}
 
-	public User getDriver() {
+	public Users getDriver() {
 		return driver;
 	}
 
-	public void setDriver(User driver) {
+	public void setDriver(Users driver) {
 		this.driver = driver;
 	}
 
-	public User getClient() {
+	public Users getClient() {
 		return client;
 	}
 
-	public void setClient(User client) {
+	public void setClient(Users client) {
 		this.client = client;
 	}
 

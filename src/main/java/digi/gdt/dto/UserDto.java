@@ -1,6 +1,6 @@
 package digi.gdt.dto;
 
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 
 public class UserDto {
   private Integer user_id;
@@ -13,7 +13,7 @@ public class UserDto {
     this.firstname = firstname;
   }
 
-  public static UserDto from(User user) {
+  public static UserDto from(Users user) {
     return new UserDto(user.getId(), user.getLastname(), user.getFirstname());
   }
 

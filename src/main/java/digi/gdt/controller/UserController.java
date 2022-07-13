@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import digi.gdt.dto.CarpoolDto;
 import digi.gdt.dto.CreateCarpoolReservationDto;
-import digi.gdt.entity.User;
+import digi.gdt.dto.CreateUserDto;
+import digi.gdt.entity.Users;
 import digi.gdt.service.UserService;
 
 @RestController
@@ -40,7 +42,7 @@ public class UserController {
 	@GetMapping("{user_id}/reservations")
 	public ResponseEntity<?> listAllByUserID(@PathVariable Integer user_id) {
 		// On récupère l'utilsateur grâce à son ID (s'il existe)
-		Optional<User> optUser = this.userSrv.findById(user_id);
+		Optional<Users> optUser = this.userSrv.findById(user_id);
 		if (optUser.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun utilisateur trouvé");
 		} else {
@@ -66,6 +68,13 @@ public class UserController {
 	public ResponseEntity<?> createCarpoolReservation(@PathVariable Integer user_id, @PathVariable Integer carpool_id) {
 		CreateCarpoolReservationDto user = userSrv.createCarpoolReservation(user_id, carpool_id);
 		return ResponseEntity.ok(user);
+	}
+
+	@PostMapping
+	public ResponseEntity<?> createUser(@RequestBody CreateUserDto user) {
+		Users newUser = this.userSrv.createUser(user);
+
+		return ResponseEntity.ok(newUser);
 	}
 
 }

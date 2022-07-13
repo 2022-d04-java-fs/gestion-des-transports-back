@@ -23,11 +23,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.PrivateVehicle;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 import digi.gdt.service.UserService;
 
 @WebMvcTest(controllers = UserController.class)
-public class UserControllerTest {
+public class UserControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -38,11 +38,11 @@ public class UserControllerTest {
 	UserService userSrv;
 
 	private List<Carpool> carpoolsBeforeEach = new ArrayList<>();
-	private List<User> usersBeforeEach = new ArrayList<>();
+	private List<Users> usersBeforeEach = new ArrayList<>();
 
 	@BeforeEach
 	void addCarpool() {
-		User u1 = new User();
+		Users u1 = new Users();
 		u1.setEmail("test@test.fr");
 		u1.setFirstname("John");
 		u1.setLastname("Doe");
@@ -79,16 +79,6 @@ public class UserControllerTest {
 		assertNotNull(userSrv);
 	}
 
-	@Test
-	void getUsersfromEmptyList() throws Exception {
-
-		List<User> users = new ArrayList<>();
-		// user_id d'un user connu
-		Integer user_id = 1;
-		Mockito.when(userSrv.findAll()).thenReturn(users);
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))
-				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().is4xxClientError());
-	}
 
 	/**
 	 * Vérifie que pour un utilsateur trouvé, il donne la bonne liste des carpools
@@ -96,10 +86,10 @@ public class UserControllerTest {
 	 * @throws Exception
 	 */
 	@Test
-	void getCarpoolListfromUser() throws Exception { // user_id d'un user connu
+	void getCarpoolListfromUser() throws Exception { // user_id d'un Users connu
 		Integer user_id = 1;
-		Optional<User> user_result = Optional.of(usersBeforeEach.get(user_id - 1)); // Comme les listes démarrent à 0,
-																					// on retire 1 à id ici
+		Optional<Users> user_result = Optional.of(usersBeforeEach.get(user_id - 1)); // Comme les listes démarrent à 0,
+																						// on retire 1 à id ici
 		Mockito.when(userSrv.findById(user_id)).thenReturn(user_result);
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
@@ -125,8 +115,8 @@ public class UserControllerTest {
 	@Test
 	void getEmptyCarpoolListfromUser() throws Exception { // user_id d'un user connu
 		Integer user_id = 1;
-		Optional<User> user_result = Optional.of(usersBeforeEach.get(user_id - 1)); // Comme les listes démarrent à 0,
-																					// on retire 1 à id ici
+		Optional<Users> user_result = Optional.of(usersBeforeEach.get(user_id - 1)); // Comme les listes démarrent à 0,
+																						// on retire 1 à id ici
 		user_result.get().setCarpoolReservations(new HashSet<Carpool>());
 		Mockito.when(userSrv.findById(user_id)).thenReturn(user_result);
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))
