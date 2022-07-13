@@ -31,22 +31,22 @@ public class UserController {
 
 	/**
 	 * *GET* - Liste des covoiturages en fonction de l'id de l'utilisateur
-	 * http://localhost:8080/api/carpools?user_id='
+	 * http://localhost:8080/api/users/reservations?user_id='
 	 * 
 	 * 404 - covoiturage non trouvé 200 - liste des covoiturages trouvés
 	 * 
 	 * @return ResponseEntity<?>
 	 */
-	@GetMapping(params = { "user_id" })
+	@GetMapping(path = "/reservations", params = { "user_id" })
 	public ResponseEntity<?> listAllByUserID(@RequestParam Integer user_id) {
 		// On récupère l'utilsateur grâce à son ID (s'il existe)
 		Optional<User> optUser = this.userSrv.findById(user_id);
 		if (optUser.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun utilisateur trouvé");
 		} else {
+			System.out.println(optUser.get().getId());
 			List<CarpoolDto> carpools = optUser.get().getCarpoolReservations().stream().map(CarpoolDto::from).toList();
 			return ResponseEntity.ok(carpools);
-
 		}
 	}
 

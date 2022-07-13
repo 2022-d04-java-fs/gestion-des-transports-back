@@ -1,5 +1,6 @@
 package digi.gdt.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,6 +24,10 @@ public class UserService {
 	public UserService(UserRepository userRepo, CarpoolRepository carpoolRepo) {
 		this.userRepo = userRepo;
 		this.carpoolRepo = carpoolRepo;
+	}
+
+	public List<User> findAll() {
+		return this.userRepo.findAll();
 	}
 
 	@Transactional

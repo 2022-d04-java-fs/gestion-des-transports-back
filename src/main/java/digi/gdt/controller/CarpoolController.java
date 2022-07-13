@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import digi.gdt.dto.CarpoolDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.service.CarpoolService;
-import digi.gdt.service.UserService;
 
 @RestController
 @RequestMapping("carpools")
@@ -23,11 +22,9 @@ import digi.gdt.service.UserService;
 public class CarpoolController {
 
 	private CarpoolService carpoolSrv;
-	private UserService userSrv;
 
-	public CarpoolController(CarpoolService carpool, UserService userSrv) {
+	public CarpoolController(CarpoolService carpool) {
 		this.carpoolSrv = carpool;
-		this.userSrv = userSrv;
 	}
 
 	/**
