@@ -22,5 +22,4 @@ public class PrivateVehicle extends AbstractVehicle {
 	public PrivateVehicle() {
 
 	}
-
 }

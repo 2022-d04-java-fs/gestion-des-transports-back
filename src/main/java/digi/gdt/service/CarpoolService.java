@@ -55,14 +55,16 @@ public class CarpoolService {
 	public AddCarpoolDto createCarpool(LocalDateTime date, String departureAddress, String ArrivalAddress,
 			BigDecimal distance, BigInteger duration, Integer availableSeats, Integer creatorId,
 			AddPrivateVehicleDto vehicleDto) {
-
 		Optional<Users> creator = this.userRepo.findById(creatorId);
+
 		if (creator.isEmpty()) {
 			throw new NotFoundException("Utilisateur avec l'id " + creatorId + " non trouvé");
 		}
+
 		PrivateVehicle newVehicle = new PrivateVehicle();
 		Optional<PrivateVehicle> existingVehicle = this.privateVehicleRepo
 				.findByLicensePlate(vehicleDto.getLicensePlate());
+
 		if (existingVehicle.isPresent()) {
 			newVehicle = existingVehicle.get();
 		} else {
@@ -72,8 +74,9 @@ public class CarpoolService {
 			newVehicle.setOwner(creator.get());
 			this.privateVehicleRepo.save(newVehicle);
 		}
+
 		Carpool newCarpool = new Carpool();
-		newCarpool.setCreator(creator.get());
+		newCarpool.setCreator(newVehicle.getOwner());
 		newCarpool.setArrivalAddress(ArrivalAddress);
 		newCarpool.setDepartureAddress(departureAddress);
 		newCarpool.setDistance(distance);
@@ -81,6 +84,7 @@ public class CarpoolService {
 		newCarpool.setAvailableSeats(availableSeats);
 		newCarpool.setVehicle(newVehicle);
 		newCarpool.setDate(date);
+
 		this.carpoolRepo.save(newCarpool);
 
 		return AddCarpoolDto.from(newCarpool);
