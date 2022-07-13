@@ -79,6 +79,16 @@ public class UserControllerTests {
 		assertNotNull(userSrv);
 	}
 
+	@Test
+	void getUsersfromEmptyList() throws Exception {
+
+		List<Users> users = new ArrayList<>();
+		// user_id d'un Users connu
+		Integer user_id = 1;
+		Mockito.when(userSrv.findAll()).thenReturn(users);
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().is4xxClientError());
+	}
 
 	/**
 	 * Vérifie que pour un utilsateur trouvé, il donne la bonne liste des carpools

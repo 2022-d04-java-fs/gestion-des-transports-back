@@ -28,6 +28,10 @@ public class CarpoolController {
 
   private CarpoolService carpoolSrv;
 
+  public CarpoolController(CarpoolService carpoolSrv) {
+    this.carpoolSrv = carpoolSrv;
+  }
+
   /**
    * *GET* - Liste de tous les covoiturages 'GET
    * http://localhost:8080/api/carpools'

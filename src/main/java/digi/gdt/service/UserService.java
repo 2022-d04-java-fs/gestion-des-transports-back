@@ -1,6 +1,7 @@
 package digi.gdt.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -32,6 +33,10 @@ public class UserService {
     this.carpoolRepo = carpoolRepo;
     this.passwordEncoder = passwordEncoder;
   }
+
+  public List<Users> findAll() {
+		return this.userRepo.findAll();
+	}
 
   @Transactional
   public CreateCarpoolReservationDto createCarpoolReservation(Integer user_id, Integer carpool_id) {
