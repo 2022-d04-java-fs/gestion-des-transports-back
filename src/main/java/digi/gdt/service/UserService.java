@@ -56,7 +56,10 @@ public class UserService {
     }
     carpool.setAvailableSeats(carpool.getAvailableSeats() - 1);
     Users user = foundUser.get();
+    Set<Carpool> userCarpools = user.getCarpoolReservations();
 
+    userCarpools.add(carpool);
+    user.setCarpoolReservations(userCarpools);
     userRepo.save(user);
     return CreateCarpoolReservationDto.from(user);
   }
