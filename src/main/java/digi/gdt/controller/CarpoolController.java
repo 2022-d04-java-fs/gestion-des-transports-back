@@ -1,41 +1,71 @@
 package digi.gdt.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import digi.gdt.dto.AddCarpoolDto;
+import digi.gdt.dto.AddPrivateVehicleDto;
 import digi.gdt.dto.CarpoolDto;
 import digi.gdt.entity.Carpool;
+import digi.gdt.entity.PrivateVehicle;
 import digi.gdt.service.CarpoolService;
+import digi.gdt.service.PrivateVehicleService;
 
 @RestController
 @RequestMapping("carpools")
 @CrossOrigin(origins = "*")
 public class CarpoolController {
-  private CarpoolService carpoolService;
+	private CarpoolService carpoolService;
+	private PrivateVehicleService privateVehicleService;
 
-  public CarpoolController(CarpoolService carpoolService) {
-    this.carpoolService = carpoolService;
-  }
+	public CarpoolController(CarpoolService carpoolService, PrivateVehicleService privateVehicleService) {
+		this.carpoolService = carpoolService;
+		this.privateVehicleService = privateVehicleService;
+	}
 
-  /**
-   * *GET* - Liste de tous les covoiturages
-   * 'GET http://localhost:8080/api/carpools'
-   * 
-   * @return List<CarpoolDto>
-   */
-  @GetMapping
-  public List<CarpoolDto> listAll() {
-    return this.carpoolService.findAll().stream().map(CarpoolDto::from).toList();
-  }
+	/**
+	 * *GET* - Liste de tous les covoiturages 'GET
+	 * http://localhost:8080/api/carpools'
+	 * 
+	 * @return List<CarpoolDto>
+	 */
+	@GetMapping
+	public List<CarpoolDto> listAll() {
+		return this.carpoolService.findAll().stream().map(CarpoolDto::from).toList();
+	}
 
+
+	/**
+	 * *POST* - Créer une nouvelle annonce de covoiturage 'POST
+	 * http://localhost:8080/api/carpools'
+	 * 
+	 * 400 - Bad Request 200 - Objet carpool crée
+	 * 
+	 * @return ResponseEntity<?>
+	 */
+	@PostMapping
+	public ResponseEntity<?> addCarpool(@RequestBody AddCarpoolDto carpool) {
+		AddPrivateVehicleDto vehicle = carpool.getVehicle();
+		PrivateVehicle newVehicle = this.privateVehicleService.createPrivateVehicle(carpool.getCreatorId(),
+				vehicle.getLicensePlate(), vehicle.getBrand(), vehicle.getModel());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime date = LocalDateTime.parse(carpool.getDate(), formatter);
+		AddCarpoolDto newCarpool = this.carpoolService.createCarpool(date, carpool.getDepartureAddress(),
+				carpool.getArrivalAddress(), carpool.getDistance(), carpool.getDuration(), carpool.getAvailableSeats(),
+				carpool.getCreatorId(), newVehicle);
+		return ResponseEntity.ok(newCarpool);
+	}
   /**
    * *GET* - Liste des covoiturages en fonction de leur ville de départ
    * 'GET http://localhost:8080/api/carpools?departureAddress='
