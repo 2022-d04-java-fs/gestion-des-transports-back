@@ -1,5 +1,7 @@
 package digi.gdt.dto;
 
+import digi.gdt.entity.PrivateVehicle;
+
 public class AddPrivateVehicleDto {
 
 	private String licensePlate;
@@ -11,6 +13,10 @@ public class AddPrivateVehicleDto {
 		this.licensePlate = licensePlate;
 		this.brand = brand;
 		this.model = model;
+	}
+
+	public static AddPrivateVehicleDto from(PrivateVehicle vehicle) {
+		return new AddPrivateVehicleDto(vehicle.getLicensePlate(), vehicle.getBrand(), vehicle.getModel());
 	}
 
 	public String getLicensePlate() {

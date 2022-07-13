@@ -125,7 +125,7 @@ public class CarpoolController {
 				vehicle.getLicensePlate(), vehicle.getBrand(), vehicle.getModel());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime date = LocalDateTime.parse(carpool.getDate(), formatter);
-		Carpool newCarpool = this.carpoolService.createCarpool(date, carpool.getDepartureAddress(),
+		AddCarpoolDto newCarpool = this.carpoolService.createCarpool(date, carpool.getDepartureAddress(),
 				carpool.getArrivalAddress(), carpool.getDistance(), carpool.getDuration(), carpool.getAvailableSeats(),
 				carpool.getCreatorId(), newVehicle);
 		return ResponseEntity.ok(newCarpool);

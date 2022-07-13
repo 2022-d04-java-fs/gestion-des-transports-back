@@ -3,6 +3,8 @@ package digi.gdt.dto;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import digi.gdt.entity.Carpool;
+
 public class AddCarpoolDto {
 
 	private Integer creatorId;
@@ -25,6 +27,13 @@ public class AddCarpoolDto {
 		this.availableSeats = availableSeats;
 		this.date = date;
 		this.creatorId = creatorId;
+	}
+
+	public static AddCarpoolDto from(Carpool carpool) {
+		return new AddCarpoolDto(carpool.getCreator().getId(), carpool.getDepartureAddress(),
+				carpool.getArrivalAddress(), carpool.getDistance(), carpool.getDuration(),
+				AddPrivateVehicleDto.from(carpool.getVehicle()), carpool.getAvailableSeats(),
+				carpool.getDate().toString());
 	}
 
 	public Integer getCreatorId() {

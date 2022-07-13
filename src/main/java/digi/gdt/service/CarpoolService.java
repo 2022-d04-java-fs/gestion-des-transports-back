@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import digi.gdt.dto.AddCarpoolDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.PrivateVehicle;
 import digi.gdt.entity.User;
@@ -47,7 +48,7 @@ public class CarpoolService {
 	}
 
 	@Transactional
-	public Carpool createCarpool(LocalDateTime date, String departureAddress, String ArrivalAddress,
+	public AddCarpoolDto createCarpool(LocalDateTime date, String departureAddress, String ArrivalAddress,
 			BigDecimal distance, BigInteger duration, Integer availableSeats, Integer creatorId,
 			PrivateVehicle vehicle) {
 		Optional<User> creator = this.userRepo.findById(creatorId);
@@ -64,7 +65,7 @@ public class CarpoolService {
 		newCarpool.setVehicle(vehicle);
 		newCarpool.setDate(date);
 		this.carpoolRepo.save(newCarpool);
-		return newCarpool;
+		return AddCarpoolDto.from(newCarpool);
 	}
 
 }
