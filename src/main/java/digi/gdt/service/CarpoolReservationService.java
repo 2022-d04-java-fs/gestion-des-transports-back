@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import digi.gdt.dto.CarpoolReservationDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.CarpoolReservation;
-import digi.gdt.entity.CarpoolReservationStatusEnum;
-import digi.gdt.entity.User;
+import digi.gdt.entity.CarpoolStatusEnum;
+import digi.gdt.entity.Users;
 import digi.gdt.exception.BadRequestException;
 import digi.gdt.exception.NotFoundException;
 import digi.gdt.repository.CarpoolRepository;
@@ -31,7 +31,7 @@ public class CarpoolReservationService {
 	}
 
 	public CarpoolReservationDto createCarpoolReservation(Integer user_id, Integer carpool_id) {
-		Optional<User> foundUser = this.userRepo.findById(user_id);
+		Optional<Users> foundUser = this.userRepo.findById(user_id);
 		if (foundUser.isEmpty()) {
 			throw new NotFoundException("Utilisateur avec l'id " + user_id + " non trouvé");
 		}
@@ -47,12 +47,12 @@ public class CarpoolReservationService {
 		}
 		carpool.setAvailableSeats(carpool.getAvailableSeats() - 1);
 		carpoolRepo.save(carpool);
-		User user = foundUser.get();
+		Users user = foundUser.get();
 
 		CarpoolReservation newReservation = new CarpoolReservation();
 		newReservation.setCarpool(carpool);
 		newReservation.setPassenger(user);
-		newReservation.setReservationStatus(CarpoolReservationStatusEnum.OK);
+		newReservation.setReservationStatus(CarpoolStatusEnum.OK);
 
 		carpoolResaRepo.save(newReservation);
 		return CarpoolReservationDto.from(newReservation);
@@ -64,11 +64,11 @@ public class CarpoolReservationService {
 			throw new NotFoundException("Réservation de covoiturage " + reservation_id + " non trouvée");
 		}
 		CarpoolReservation carpoolResa = foundCarpoolReservation.get();
-		if (carpoolResa.getReservationStatus() == CarpoolReservationStatusEnum.CANCELLED) {
+		if (carpoolResa.getReservationStatus() == CarpoolStatusEnum.CANCELLED) {
 			throw new BadRequestException("la réservation est déjà annulée");
 		}
 
-		carpoolResa.setReservationStatus(CarpoolReservationStatusEnum.CANCELLED);
+		carpoolResa.setReservationStatus(CarpoolStatusEnum.CANCELLED);
 		carpoolResaRepo.save(carpoolResa);
 		Carpool carpool = carpoolResa.getCarpool();
 		carpool.setAvailableSeats(carpool.getAvailableSeats() + 1);
@@ -77,11 +77,11 @@ public class CarpoolReservationService {
 	}
 
 	public List<CarpoolReservationDto> getCarpoolReservationsByUserId(Integer user_id) {
-		Optional<User> foundUser = userRepo.findById(user_id);
+		Optional<Users> foundUser = userRepo.findById(user_id);
 		if (foundUser.isEmpty()) {
 			throw new NotFoundException("Utilisateur avec l'id " + user_id + " non trouvé");
 		}
-		return carpoolResaRepo.findByPassenger(foundUser.get()).stream().map(resa -> CarpoolReservationDto.from(resa))
+		return carpoolResaRepo.findAllByPassenger(foundUser.get()).stream().map(resa -> CarpoolReservationDto.from(resa))
 				.toList();
 	}
 }

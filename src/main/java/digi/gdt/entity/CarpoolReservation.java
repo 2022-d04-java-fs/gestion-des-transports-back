@@ -22,11 +22,11 @@ public class CarpoolReservation {
 
 	@NotNull
 	@ManyToOne
-	private User passenger;
+	private Users passenger;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private CarpoolReservationStatusEnum reservationStatus;
+	private CarpoolStatusEnum reservationStatus;
 
 	public CarpoolReservation() {
 	}
@@ -47,19 +47,19 @@ public class CarpoolReservation {
 		this.carpool = carpool;
 	}
 
-	public User getPassenger() {
+	public Users getPassenger() {
 		return passenger;
 	}
 
-	public void setPassenger(User passenger) {
+	public void setPassenger(Users passenger) {
 		this.passenger = passenger;
 	}
 
-	public CarpoolReservationStatusEnum getReservationStatus() {
+	public CarpoolStatusEnum getReservationStatus() {
 		return reservationStatus;
 	}
 
-	public void setReservationStatus(CarpoolReservationStatusEnum reservationStatus) {
+	public void setReservationStatus(CarpoolStatusEnum reservationStatus) {
 		this.reservationStatus = reservationStatus;
 	}
 

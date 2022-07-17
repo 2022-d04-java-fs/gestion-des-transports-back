@@ -1,5 +1,5 @@
 package digi.gdt.entity;
 
-public enum CarpoolReservationStatusEnum {
+public enum CarpoolStatusEnum {
 	OK, CANCELLED
 }

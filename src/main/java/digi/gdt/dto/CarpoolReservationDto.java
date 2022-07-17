@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.CarpoolReservation;
-import digi.gdt.entity.CarpoolReservationStatusEnum;
-import digi.gdt.entity.User;
+import digi.gdt.entity.CarpoolStatusEnum;
+import digi.gdt.entity.Users;
 
 //{
 //	"user": UserDto,
@@ -22,11 +22,11 @@ public class CarpoolReservationDto {
 	private UserDto driver;
 	private PrivateVehicleDto vehicle;
 	private Integer availableSeats;
-	private CarpoolReservationStatusEnum status;
+	private CarpoolStatusEnum status;
 
 	public CarpoolReservationDto(Integer reservation_id, Integer carpool_id, LocalDateTime dateHeure,
 			String departureAddress, String arrivalAddress, UserDto driver, PrivateVehicleDto vehicle,
-			Integer availableSeats, CarpoolReservationStatusEnum status) {
+			Integer availableSeats, CarpoolStatusEnum status) {
 		super();
 		this.reservation_id = reservation_id;
 		this.carpool_id = carpool_id;
@@ -41,7 +41,7 @@ public class CarpoolReservationDto {
 
 	public static CarpoolReservationDto from(CarpoolReservation resa) {
 		Carpool carpool = resa.getCarpool();
-		User user = resa.getPassenger();
+		Users user = resa.getPassenger();
 		return new CarpoolReservationDto(resa.getId(), carpool.getId(), carpool.getDate(),
 				carpool.getDepartureAddress(), carpool.getArrivalAddress(), UserDto.from(user),
 				PrivateVehicleDto.from(carpool.getVehicle()), carpool.getAvailableSeats(), resa.getReservationStatus());
@@ -111,11 +111,11 @@ public class CarpoolReservationDto {
 		this.availableSeats = availableSeats;
 	}
 
-	public CarpoolReservationStatusEnum getStatus() {
+	public CarpoolStatusEnum getStatus() {
 		return status;
 	}
 
-	public void setStatus(CarpoolReservationStatusEnum status) {
+	public void setStatus(CarpoolStatusEnum status) {
 		this.status = status;
 	}
 

@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import digi.gdt.entity.Carpool;
 import digi.gdt.entity.CarpoolReservation;
-import digi.gdt.entity.User;
+import digi.gdt.entity.Users;
 
 public interface CarpoolReservationRepository extends JpaRepository<CarpoolReservation, Integer> {
 
-	List<CarpoolReservation> findByPassenger(User user);
+	List<CarpoolReservation> findAllByPassenger(Users user);
+
+	List<CarpoolReservation> findAllByCarpool(Carpool carpool);
 
 }

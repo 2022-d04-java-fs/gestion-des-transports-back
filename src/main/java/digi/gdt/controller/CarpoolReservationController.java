@@ -52,8 +52,7 @@ public class CarpoolReservationController {
 	 * 404 - user, covoiturage ou réservation non trouvée 400 - la réservation est
 	 * déjà annulée 200 - réservation annulée !
 	 * 
-	 * @param user_id
-	 * @param carpool_id
+	 * @param reservation_id
 	 * @return ResponseEntity<?>
 	 */
 	@PatchMapping(params = { "reservation_id" })
@@ -62,6 +61,16 @@ public class CarpoolReservationController {
 		return ResponseEntity.ok(carpoolResa);
 	}
 
+
+	/**
+	 * *GET* - retourne la liste de toutes les réservation de l'utilisateur
+	 * http://localhost:8080/api/carpools/reservations?user_id'
+	 * 
+	 * 404 - user non trouvée 400 - 
+	 * 
+	 * @param reservation_id
+	 * @return ResponseEntity<?>
+	 */
 	@GetMapping(params = { "user_id" })
 	public ResponseEntity<?> getCarpoolReservationsByUserId(@RequestParam Integer user_id) {
 		List<CarpoolReservationDto> carpoolResas = carpoolResaServ.getCarpoolReservationsByUserId(user_id);

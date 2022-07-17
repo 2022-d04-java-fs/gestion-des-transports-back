@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-public class User {
+public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -38,8 +38,14 @@ public class User {
 	@Size(min = 1, max = 3)
 	private Set<Role> roles;
 
-	public User() {
+	public Users() {
 		this.roles = new HashSet<>();
+	}
+
+	public Users(@NotNull String email, @NotNull String password) {
+		super();
+		this.email = email;
+		this.password = password;
 	}
 
 	public Set<Role> getRoles() {
