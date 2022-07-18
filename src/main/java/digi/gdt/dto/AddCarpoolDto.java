@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import digi.gdt.entity.Carpool;
+import digi.gdt.entity.CarpoolStatusEnum;
 
 public class AddCarpoolDto {
 
@@ -15,6 +16,7 @@ public class AddCarpoolDto {
 	private AddPrivateVehicleDto vehicle;
 	private Integer availableSeats;
 	private String date;
+	private CarpoolStatusEnum status;
 
 	public AddCarpoolDto(Integer creatorId, String departureAddress, String arrivalAddress, BigDecimal distance,
 			BigInteger duration, AddPrivateVehicleDto vehicle, Integer availableSeats, String date) {
@@ -35,6 +37,15 @@ public class AddCarpoolDto {
 				AddPrivateVehicleDto.from(carpool.getVehicle()), carpool.getAvailableSeats(),
 				carpool.getDate().toString());
 	}
+
+	public CarpoolStatusEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(CarpoolStatusEnum status) {
+		this.status = status;
+	}
+
 
 	public Integer getCreatorId() {
 		return creatorId;

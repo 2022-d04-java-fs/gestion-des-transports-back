@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +21,14 @@ import digi.gdt.dto.CarpoolDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.service.CarpoolService;
 
+
 @RestController
 @RequestMapping("carpools")
 @CrossOrigin(origins = "*")
 public class CarpoolController {
 
   private CarpoolService carpoolSrv;
+
 
   public CarpoolController(CarpoolService carpoolSrv) {
     this.carpoolSrv = carpoolSrv;
@@ -128,21 +130,32 @@ public class CarpoolController {
     }
   }
 
+
   /**
-   * *GET* - Liste des covoiturages en fonction de l'id de l'utilisateur
-   * 'GET http://localhost:8080/api/carpools/reservations/:userId'
+   * *GET* - Liste des covoiturages postés par un utilisateur 'GET
+   * http://localhost:8080/api/carpools?user_id='
    * 
-   * 404 - utilisateur non trouvé
-   * 200 - liste des covoiturages trouvés
+   * 404 - utilisateur non trouvé 200 - liste des covoiturages trouvés
    * 
    * @return ResponseEntity<?>
    */
-  @GetMapping("reservations/{userId}")
-  public ResponseEntity<?> listAllCarpoolByUserId(
-      @PathVariable Integer userId) {
-    List<CarpoolDto> carpoolsListB = this.carpoolSrv.listAllCarpoolByUserId(userId).stream().map(CarpoolDto::from)
-        .toList();
-    return ResponseEntity.ok(carpoolsListB);
+  @GetMapping(params = { "user_id" })
+  public ResponseEntity<?> listAllByUserId(@RequestParam Integer user_id) {
+    List<Carpool> carpoolList = this.carpoolSrv.listAllCarpoolByUserId(user_id);
+    return ResponseEntity.ok(carpoolList.stream().map(c -> CarpoolDto.from(c)));
   }
-
+  
+  /**
+  * *PATCH* - Annule le covoiturage et toutes les réservations associées 'PATCH
+  * http://localhost:8080/api/carpools?carpool_id='
+  * 
+  * 404 - carpool non trouvé 200 - carpool
+  * 
+  * @return ResponseEntity<?>
+  */
+  @PatchMapping(params = {"carpool_id"})
+  public ResponseEntity<?> cancelCarpool(@RequestParam Integer carpool_id){
+    CarpoolDto carpool = carpoolSrv.cancelCarpool(carpool_id);
+    return ResponseEntity.ok(carpool);
+  }
 }

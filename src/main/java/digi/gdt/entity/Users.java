@@ -38,12 +38,8 @@ public class Users {
 	@Size(min = 1, max = 3)
 	private Set<Role> roles;
 
-	@ManyToMany
-	private Set<Carpool> carpoolReservations;
-
 	public Users() {
 		this.roles = new HashSet<>();
-		this.carpoolReservations = new HashSet<>();
 	}
 
 	public Users(@NotNull String email, @NotNull String password) {
@@ -58,14 +54,6 @@ public class Users {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
-	}
-
-	public Set<Carpool> getCarpoolReservations() {
-		return carpoolReservations;
-	}
-
-	public void setCarpoolReservations(Set<Carpool> carpoolReservations) {
-		this.carpoolReservations = carpoolReservations;
 	}
 
 	public Integer getId() {

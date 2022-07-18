@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,6 +34,10 @@ public class Carpool {
 	private BigInteger duration;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
+	private CarpoolStatusEnum status;
+
+	@NotNull
 	@PositiveOrZero
 	private Integer availableSeats;
 
@@ -45,6 +51,14 @@ public class Carpool {
 
 	public Carpool() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public CarpoolStatusEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(CarpoolStatusEnum status) {
+		this.status = status;
 	}
 
 	public Users getCreator() {

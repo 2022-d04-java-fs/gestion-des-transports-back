@@ -12,10 +12,13 @@ import org.springframework.stereotype.Service;
 
 import digi.gdt.dto.AddCarpoolDto;
 import digi.gdt.dto.AddPrivateVehicleDto;
+import digi.gdt.dto.CarpoolDto;
 import digi.gdt.entity.Carpool;
-
+import digi.gdt.entity.CarpoolReservation;
+import digi.gdt.entity.CarpoolStatusEnum;
 import digi.gdt.exception.NotFoundException;
 import digi.gdt.repository.CarpoolRepository;
+import digi.gdt.repository.CarpoolReservationRepository;
 import digi.gdt.entity.PrivateVehicle;
 import digi.gdt.entity.Users;
 import digi.gdt.repository.PrivateVehicleRepository;
@@ -24,14 +27,16 @@ import digi.gdt.repository.UserRepository;
 @Service
 public class CarpoolService {
 	private CarpoolRepository carpoolRepo;
+	private CarpoolReservationRepository carpoolResaRepo;
 	private UserRepository userRepo;
 	private PrivateVehicleRepository privateVehicleRepo;
 
 	public CarpoolService(CarpoolRepository carpoolRepo, UserRepository userRepo,
-			PrivateVehicleRepository privateVehicleRepo) {
+			PrivateVehicleRepository privateVehicleRepo, CarpoolReservationRepository carpoolResaRepo) {
 		this.carpoolRepo = carpoolRepo;
 		this.userRepo = userRepo;
 		this.privateVehicleRepo = privateVehicleRepo;
+		this.carpoolResaRepo = carpoolResaRepo;
 	}
 
 	public List<Carpool> findAll() {
@@ -94,10 +99,27 @@ public class CarpoolService {
 		newCarpool.setAvailableSeats(availableSeats);
 		newCarpool.setVehicle(newVehicle);
 		newCarpool.setDate(date);
+		newCarpool.setStatus(CarpoolStatusEnum.OK);
 
 		this.carpoolRepo.save(newCarpool);
 
 		return AddCarpoolDto.from(newCarpool);
 	}
+
+    public CarpoolDto cancelCarpool(Integer carpool_id) {
+        Optional<Carpool> foundCarpool = this.carpoolRepo.findById(carpool_id);
+		if (foundCarpool.isEmpty()){
+			throw new NotFoundException("Carpool avec l'id " + carpool_id + " non trouvé");
+		}
+		Carpool carpool = foundCarpool.get();
+		List<CarpoolReservation> reservations = this.carpoolResaRepo.findAllByCarpool(carpool);
+		reservations.forEach(resa -> {
+			resa.setReservationStatus(CarpoolStatusEnum.CANCELLED);
+			this.carpoolResaRepo.save(resa);
+		});
+		carpool.setStatus(CarpoolStatusEnum.CANCELLED);
+		this.carpoolRepo.save(carpool);
+		return CarpoolDto.from(carpool);
+    }
 
 }
