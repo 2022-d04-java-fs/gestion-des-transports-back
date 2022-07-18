@@ -25,6 +25,7 @@ import digi.gdt.repository.UserRepository;
 public class UserService {
   private UserRepository userRepo;
 
+
   private PasswordEncoder passwordEncoder;
 
   public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
