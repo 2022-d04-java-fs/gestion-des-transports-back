@@ -30,13 +30,15 @@ public class CarpoolService {
 	private CarpoolReservationRepository carpoolResaRepo;
 	private UserRepository userRepo;
 	private PrivateVehicleRepository privateVehicleRepo;
+	private EmailServiceImpl emailServ;
 
 	public CarpoolService(CarpoolRepository carpoolRepo, UserRepository userRepo,
-			PrivateVehicleRepository privateVehicleRepo, CarpoolReservationRepository carpoolResaRepo) {
+			PrivateVehicleRepository privateVehicleRepo, CarpoolReservationRepository carpoolResaRepo, EmailServiceImpl emailServ) {
 		this.carpoolRepo = carpoolRepo;
 		this.userRepo = userRepo;
 		this.privateVehicleRepo = privateVehicleRepo;
 		this.carpoolResaRepo = carpoolResaRepo;
+		this.emailServ = emailServ;
 	}
 
 	public List<Carpool> findAll() {
@@ -112,13 +114,16 @@ public class CarpoolService {
 			throw new NotFoundException("Carpool avec l'id " + carpool_id + " non trouvé");
 		}
 		Carpool carpool = foundCarpool.get();
+		String emailBody = carpool.getCreator().getFirstname() + " " + carpool.getCreator().getLastname() + " vient d'annuler son annonce de covoiturage " + carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString();
 		List<CarpoolReservation> reservations = this.carpoolResaRepo.findAllByCarpool(carpool);
 		reservations.forEach(resa -> {
 			resa.setReservationStatus(CarpoolStatusEnum.CANCELLED);
 			this.carpoolResaRepo.save(resa);
+			this.emailServ.sendSimpleMessage(resa.getPassenger().getEmail(), "Annulation de covoiturage", emailBody);
 		});
 		carpool.setStatus(CarpoolStatusEnum.CANCELLED);
 		this.carpoolRepo.save(carpool);
+		this.emailServ.sendSimpleMessage(carpool.getCreator().getEmail(), "Annulation de covoiturage", "Votre annonce de covoiturage "+ carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString() + " a bien étée annulée.");
 		return CarpoolDto.from(carpool);
     }
 
