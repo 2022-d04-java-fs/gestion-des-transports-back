@@ -93,7 +93,7 @@ public class CarpoolService {
 		}
 
 		Carpool newCarpool = new Carpool();
-		newCarpool.setCreator(newVehicle.getOwner());
+		newCarpool.setCreator(creator.get());
 		newCarpool.setArrivalAddress(ArrivalAddress);
 		newCarpool.setDepartureAddress(departureAddress);
 		newCarpool.setDistance(distance);
