@@ -123,7 +123,7 @@ public class CarpoolService {
 		});
 		carpool.setStatus(CarpoolStatusEnum.CANCELLED);
 		this.carpoolRepo.save(carpool);
-		this.emailServ.sendSimpleMessage(carpool.getCreator().getEmail(), "Annulation de covoiturage", "Votre annonce de covoiturage "+ carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString() + " a bien étée annulée.");
+		this.emailServ.sendSimpleMessage(carpool.getCreator().getEmail(), "Annulation de covoiturage", "Votre annonce de covoiturage "+ carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString() + " a bien été annulée.");
 		return CarpoolDto.from(carpool);
     }
 

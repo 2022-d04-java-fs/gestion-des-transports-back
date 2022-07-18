@@ -75,7 +75,7 @@ public class CarpoolReservationService {
 		Carpool carpool = carpoolResa.getCarpool();
 		carpool.setAvailableSeats(carpool.getAvailableSeats() + 1);
 		carpoolRepo.save(carpool);
-		this.emailSrv.sendSimpleMessage(carpoolResa.getPassenger().getEmail(), "Annulation de votre réservation", "Votre réservation pour le covoiturage "+ carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString() + " a bien étée annulée.");
+		this.emailSrv.sendSimpleMessage(carpoolResa.getPassenger().getEmail(), "Annulation de votre réservation", "Votre réservation pour le covoiturage "+ carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString() + " a bien été annulée.");
 		this.emailSrv.sendSimpleMessage(carpool.getCreator().getEmail(), "Un passager a annulé sa réservation", carpoolResa.getPassenger().getFirstname() + " " + carpoolResa.getPassenger().getLastname() + " vient d'annuler sa réservation pour votre covoiturage  "+ carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString());
 		return CarpoolReservationDto.from(carpoolResa);
 	}
