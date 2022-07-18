@@ -54,7 +54,7 @@ public class UserService {
 
     Set<Role> set = new HashSet<>();
     Role r1 = new Role();
-    r1.setId(3);
+    r1.setId(1);
     r1.setName(RoleEnum.COLLAB);
     set.add(r1);
     newUser.setRoles(set);

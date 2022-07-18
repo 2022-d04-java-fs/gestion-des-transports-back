@@ -20,6 +20,7 @@ import digi.gdt.dto.AddPrivateVehicleDto;
 import digi.gdt.dto.CarpoolDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.service.CarpoolService;
+import digi.gdt.service.EmailServiceImpl;
 
 
 @RestController
@@ -28,7 +29,6 @@ import digi.gdt.service.CarpoolService;
 public class CarpoolController {
 
   private CarpoolService carpoolSrv;
-
 
   public CarpoolController(CarpoolService carpoolSrv) {
     this.carpoolSrv = carpoolSrv;
