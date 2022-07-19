@@ -21,11 +21,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import digi.gdt.dto.AddCarpoolDto;
-import digi.gdt.dto.AddPrivateVehicleDto;
+import digi.gdt.dto.CarpoolDto;
 import digi.gdt.entity.Carpool;
+import digi.gdt.entity.CarpoolStatusEnum;
 import digi.gdt.entity.PrivateVehicle;
 import digi.gdt.entity.Users;
+import digi.gdt.repository.CarpoolRepository;
 import digi.gdt.service.CarpoolService;
 
 /**
@@ -42,6 +43,9 @@ class CarpoolControllerTests {
 	@MockBean
 	CarpoolService carpoolSrv;
 
+	@MockBean
+	CarpoolRepository carpoolRepo;
+
 	private List<Carpool> carpoolsBeforeEach = new ArrayList<>();
 
 	@BeforeEach
@@ -52,6 +56,13 @@ class CarpoolControllerTests {
 		u1.setLastname("Doe");
 		u1.setPassword("Test123!");
 		u1.setId(1);
+
+		Users u2 = new Users();
+		u2.setEmail("test2@test.fr");
+		u2.setFirstname("John");
+		u2.setLastname("Smith");
+		u2.setPassword("Test123!");
+		u2.setId(2);
 
 		PrivateVehicle v1 = new PrivateVehicle();
 		v1.setBrand("brand");
@@ -70,7 +81,18 @@ class CarpoolControllerTests {
 		c1.setCreator(u1);
 		c1.setVehicle(v1);
 
+		Carpool c2 = new Carpool();
+		c1.setArrivalAddress("25 Rue Malbec 33800 Bordeaux");
+		c1.setDepartureAddress("Rue Lecourbe 75015 Paris");
+		c1.setAvailableSeats(3);
+		String str2 = "2016-03-04 11:30:40";
+		LocalDateTime dateTime2 = LocalDateTime.parse(str2, formatter);
+		c2.setDate(dateTime2);
+		c2.setCreator(u2);
+		c2.setVehicle(v1);
+
 		carpoolsBeforeEach.add(c1);
+		carpoolsBeforeEach.add(c2);
 	}
 
 	/**
@@ -81,6 +103,8 @@ class CarpoolControllerTests {
 	@Test
 	void contextLoads() throws Exception {
 		assertNotNull(carpoolCtrl);
+		assertNotNull(carpoolSrv);
+		assertNotNull(carpoolRepo);
 	}
 
 	/**
@@ -120,7 +144,7 @@ class CarpoolControllerTests {
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].driver.lastname").value("Doe"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].driver.firstname").value("John"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].availableSeats").value(3))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(1));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2));
 	}
 
 	/**
@@ -138,7 +162,7 @@ class CarpoolControllerTests {
 				// .andDo(MockMvcResultHandlers.print())
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(1));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2));
 	}
 
 	/**
@@ -158,50 +182,74 @@ class CarpoolControllerTests {
 	}
 
 	/**
-	 * TEST : addCarpool(@RequestBody AddCarpoolDto carpool) Mock du back et test
-	 * avec un carpool valide
+	 * TEST : listAllByUserId(@RequestParam Integer user_id) Mock du back et test
+	 * avec un id valide
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	void addCarpoolValid() throws Exception {
-		Carpool c1 = carpoolsBeforeEach.get(0);
-		String bodyRequest = "{ \"creatorId\":  " + c1.getCreator().getId() + ", \"departureAddress\": \""
-				+ c1.getDepartureAddress() + "\", \"arrivalAddress\": \"" + c1.getArrivalAddress()
-				+ "\", \"vehicle\": {\"licensePlate\":\"" + c1.getVehicle().getLicensePlate() + "\",\"brand\":\""
-				+ c1.getVehicle().getBrand() + "\",\"model\":\"" + c1.getVehicle().getModel() + "\"}"
-				+ ", \"availableSeats\": " + c1.getAvailableSeats() + ", \"date\": \"" + "2016-03-04 11:30:40" + "\" }";
+	void listAllTestWithId() throws Exception {
+		int id = 1;
+		List<Carpool> list_result = new ArrayList<Carpool>();
+		list_result.add(carpoolsBeforeEach.get(0));
+		Mockito.when(carpoolSrv.listAllCarpoolByUserId(id)).thenReturn(list_result);
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/carpools").param("user_id", "" + id))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].dateHeure").value("2016-03-04T11:30:40"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].arrivalAddress").value("25 Rue Malbec 33800 Bordeaux"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].departureAddress").value("Rue Lecourbe 75015 Paris"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].vehicle.brand").value("brand"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].vehicle.model").value("model"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].driver.lastname").value("Doe"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].driver.firstname").value("John"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].availableSeats").value(3))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(1));
+		;
 
-		AddCarpoolDto carpool = new AddCarpoolDto(c1.getCreator().getId(), c1.getDepartureAddress(),
-				c1.getArrivalAddress(), c1.getDistance(), c1.getDuration(), AddPrivateVehicleDto.from(c1.getVehicle()),
-				c1.getAvailableSeats(), c1.getDate().toString(), c1.getStatus());
-
-		Mockito.when(carpoolSrv.createCarpool(c1.getDate(), c1.getDepartureAddress(), c1.getArrivalAddress(),
-				c1.getDistance(), c1.getDuration(), c1.getAvailableSeats(), c1.getId(),
-				AddPrivateVehicleDto.from(c1.getVehicle()))).thenReturn(carpool);
-		this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/carpools/").contentType(MediaType.APPLICATION_JSON)
-						.content(bodyRequest))
-				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
-	 * Mock du back et test avec un carpool invalide
+	 * Mock du back et test avec un id invalide
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	void addCarpoolInvalid() throws Exception {
-		String bodyRequest = "{ \"creatorId\":  " + null + ", \"departureAddress\": \"" + null
-				+ "\", \"arrivalAddress\": \"" + null + "\", \"vehicle\": {\"licensePlate\":\"" + null
-				+ "\",\"brand\":\"" + null + "\",\"model\":\"" + null + "\"}" + ", \"availableSeats\": " + null
-				+ ", \"date\": \"" + "2016-03-04 11:30:40" + "\" }";
-		AddCarpoolDto carpool = new AddCarpoolDto(null, null, null, null, null, null, null, null, null);
+	void listAllTestWithBadId() throws Exception {
+		int id = 2;
+		List<Carpool> list_result = new ArrayList<Carpool>();
+		Mockito.when(carpoolSrv.listAllCarpoolByUserId(id)).thenReturn(list_result);
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/carpools").param("user_id", "" + id))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+		;
 
-		this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/carpools/").contentType(MediaType.APPLICATION_JSON)
-						.content(bodyRequest))
-				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().is4xxClientError());
+	}
+
+	/**
+	 * TEST : cancelCarpool(@RequestParam Integer carpool_id) Mock du back et test
+	 * avec un id valide
+	 */
+
+	@Test
+	void testCancelCarpoolValid() throws Exception {
+		int id = 0;
+		CarpoolDto carpool = CarpoolDto.from(carpoolsBeforeEach.get(id));
+		carpool.setStatus(CarpoolStatusEnum.CANCELLED);
+		Mockito.when(carpoolSrv.cancelCarpool(id)).thenReturn(carpool);
+		this.mockMvc.perform(MockMvcRequestBuilders.patch("/carpools").param("carpool_id", "" + id))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+				.andExpect(MockMvcResultMatchers.jsonPath(".dateHeure").value("2016-03-04T11:30:40"))
+				.andExpect(MockMvcResultMatchers.jsonPath(".arrivalAddress").value("25 Rue Malbec 33800 Bordeaux"))
+				.andExpect(MockMvcResultMatchers.jsonPath(".departureAddress").value("Rue Lecourbe 75015 Paris"))
+				.andExpect(MockMvcResultMatchers.jsonPath(".vehicle.brand").value("brand"))
+				.andExpect(MockMvcResultMatchers.jsonPath(".vehicle.model").value("model"))
+				.andExpect(MockMvcResultMatchers.jsonPath(".driver.lastname").value("Doe"))
+				.andExpect(MockMvcResultMatchers.jsonPath(".driver.firstname").value("John"))
+				.andExpect(MockMvcResultMatchers.jsonPath(".availableSeats").value(3))
+				.andExpect(MockMvcResultMatchers.jsonPath(".status").value("CANCELLED"));
 	}
 
 	public static String asJsonString(final Object obj) {

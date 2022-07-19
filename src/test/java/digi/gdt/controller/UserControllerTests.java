@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,19 +14,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import digi.gdt.dto.CreateUserDto;
 import digi.gdt.entity.Carpool;
 import digi.gdt.entity.PrivateVehicle;
-import digi.gdt.entity.Role;
-import digi.gdt.entity.RoleEnum;
 import digi.gdt.entity.Users;
 import digi.gdt.service.UserService;
 
@@ -95,36 +88,6 @@ public class UserControllerTests {
 		Mockito.when(userSrv.findAll()).thenReturn(users);
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/users/" + user_id + "/reservations"))// .andDo(MockMvcResultHandlers.print())
 				.andExpect(MockMvcResultMatchers.status().is4xxClientError());
-	}
-
-	/*
-	 * TEST : createUser()
-	 */
-	@Test
-	void createNewUser() throws Exception {
-		CreateUserDto new_user = new CreateUserDto("test2@test.fr", "John", "Doe", "Test123!");
-		Users result_user = new Users();
-
-		result_user.setEmail("test2@test.fr");
-		result_user.setFirstname("John");
-		result_user.setLastname("Doe");
-		Set<Role> set = new HashSet<>();
-		Role r1 = new Role();
-		r1.setId(1);
-		r1.setName(RoleEnum.COLLAB);
-		set.add(r1);
-		result_user.setRoles(set);
-
-		Mockito.when(userSrv.createUser(new_user)).thenReturn(result_user);
-
-		// MvcResult result =
-		this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/users/").contentType(MediaType.APPLICATION_JSON)
-						.content(asJsonString(new_user)))
-				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
-		// .andReturn();
-		// String response = result.getResponse().getContentType();
-		// System.setOut(new PrintStream(asJsonString(new_user)));
 	}
 
 	public static String asJsonString(final Object obj) {
