@@ -41,7 +41,7 @@ public class CarpoolReservationDto {
 
 	public static CarpoolReservationDto from(CarpoolReservation resa) {
 		Carpool carpool = resa.getCarpool();
-		Users user = resa.getPassenger();
+		Users user = carpool.getCreator();
 		return new CarpoolReservationDto(resa.getId(), carpool.getId(), carpool.getDate(),
 				carpool.getDepartureAddress(), carpool.getArrivalAddress(), UserDto.from(user),
 				PrivateVehicleDto.from(carpool.getVehicle()), carpool.getAvailableSeats(), resa.getReservationStatus());
