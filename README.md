@@ -35,4 +35,4 @@ Liste des requêtes
 Diagrame UML
 ============
 
-![Image](https://user-images.githubusercontent.com/79093561/177292996-21a8f45d-1c10-481c-8412-fbf6d70211fb.png)
+![image](https://user-images.githubusercontent.com/72602777/179700968-3e64d89e-daa5-48e8-a684-c71ab1a2e9c8.png)
