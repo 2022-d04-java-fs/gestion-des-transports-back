@@ -19,7 +19,8 @@ public class AddCarpoolDto {
 	private CarpoolStatusEnum status;
 
 	public AddCarpoolDto(Integer creatorId, String departureAddress, String arrivalAddress, BigDecimal distance,
-			BigInteger duration, AddPrivateVehicleDto vehicle, Integer availableSeats, String date) {
+			BigInteger duration, AddPrivateVehicleDto vehicle, Integer availableSeats, String date,
+			CarpoolStatusEnum status) {
 		super();
 		this.departureAddress = departureAddress;
 		this.arrivalAddress = arrivalAddress;
@@ -29,13 +30,14 @@ public class AddCarpoolDto {
 		this.availableSeats = availableSeats;
 		this.date = date;
 		this.creatorId = creatorId;
+		this.status = status;
 	}
 
 	public static AddCarpoolDto from(Carpool carpool) {
 		return new AddCarpoolDto(carpool.getCreator().getId(), carpool.getDepartureAddress(),
 				carpool.getArrivalAddress(), carpool.getDistance(), carpool.getDuration(),
 				AddPrivateVehicleDto.from(carpool.getVehicle()), carpool.getAvailableSeats(),
-				carpool.getDate().toString());
+				carpool.getDate().toString(), carpool.getStatus());
 	}
 
 	public CarpoolStatusEnum getStatus() {
@@ -45,7 +47,6 @@ public class AddCarpoolDto {
 	public void setStatus(CarpoolStatusEnum status) {
 		this.status = status;
 	}
-
 
 	public Integer getCreatorId() {
 		return creatorId;
