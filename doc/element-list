@@ -1,0 +1,8 @@
+digi.gdt
+digi.gdt.config
+digi.gdt.controller
+digi.gdt.dto
+digi.gdt.entity
+digi.gdt.exception
+digi.gdt.repository
+digi.gdt.service

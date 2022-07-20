@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"digi.gdt"},{"l":"digi.gdt.config"},{"l":"digi.gdt.controller"},{"l":"digi.gdt.dto"},{"l":"digi.gdt.entity"},{"l":"digi.gdt.exception"},{"l":"digi.gdt.repository"},{"l":"digi.gdt.service"}];updateSearchResults();
