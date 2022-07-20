@@ -117,9 +117,11 @@ public class CarpoolService {
 		String emailBody = carpool.getCreator().getFirstname() + " " + carpool.getCreator().getLastname() + " vient d'annuler son annonce de covoiturage " + carpool.getDepartureAddress() + " --> " + carpool.getArrivalAddress() + " du " + carpool.getDate().toString();
 		List<CarpoolReservation> reservations = this.carpoolResaRepo.findAllByCarpool(carpool);
 		reservations.forEach(resa -> {
-			resa.setReservationStatus(CarpoolStatusEnum.CANCELLED);
-			this.carpoolResaRepo.save(resa);
-			this.emailServ.sendSimpleMessage(resa.getPassenger().getEmail(), "Annulation de covoiturage", emailBody);
+			if (resa.getReservationStatus() != CarpoolStatusEnum.CANCELLED){
+				resa.setReservationStatus(CarpoolStatusEnum.CANCELLED);
+				this.carpoolResaRepo.save(resa);
+				this.emailServ.sendSimpleMessage(resa.getPassenger().getEmail(), "Annulation de covoiturage", emailBody);
+			}
 		});
 		carpool.setStatus(CarpoolStatusEnum.CANCELLED);
 		this.carpoolRepo.save(carpool);
